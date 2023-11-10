@@ -1,0 +1,248 @@
+server:
+  port: 8084
+
+management:
+  endpoint:
+    health:
+      show-details: "always"
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: health, info, prometheus
+
+springdoc:
+  packagesToScan: uk.gov.hmcts.juror.pnc.check.controllers
+  writer-with-order-by-keys: true
+
+#If you use a database then uncomment below lines and update db properties accordingly
+spring:
+  config:
+    import: "optional:configtree:/mnt/secrets/juror/"
+  application:
+    name: Police National Computer (PNC) Check Service
+uk:
+  gov:
+    hmcts:
+      juror:
+        pnc:
+          check:
+            remote:
+              police-national-computer-service:
+                pncTerminal: ${PNC_SERVICE_PNC_TERMINAL}
+                pncUserId: ${PNC_SERVICE_PNC_USERID}
+                pncMode: ${PNC_SERVICE_PNC_MODE}
+                pncAuthorisation: ${PNC_SERVICE_PNC_AUTHORISATION}
+                pncTranCode: ${PNC_SERVICE_PNC_TRAN_CODE}
+                originator: ${PNC_SERVICE_ORIGINATOR}
+                reasonCode: ${PNC_SERVICE_REASON_CODE}
+                gatewayId: ${PNC_SERVICE_GATEWAY_ID}
+                requestLocation: ${PNC_SERVICE_REQUEST_LOCATION}
+                namespace: http://www.npia.police.uk/juror/schema/v1
+                scheme: http
+                host: ${PNC_SERVICE_HOST}
+                port: ${PNC_SERVICE_POST}
+                url: /WebServiceTestStub/WebServiceTest
+                username: ${PNC_SERVICE_USERNAME}
+                password: ${PNC_SERVICE_PASSWORD}
+                request-method: getPersonDetails
+                response-method: getPersonDetailsResponse
+              juror-service:
+                scheme: http
+                host: ${JUROR_SERVICE_HOST}
+                port: ${JUROR_SERVICE_PORT}
+                url: /api/v1/moj/juror-record/pnc/{jurorNumber}
+                security:
+                  issuer: pnc-check-service
+                  token-validity: 160000
+                  subject: pnc-check-service
+                  secret: ${JUROR_SERVICE_SECRET}
+                  claims:
+                    login: AUTO
+                    userLevel: "1"
+                    daysToExpire: 6
+                    passwordWarning: true
+                    staff:
+                      name: AUTO
+                      rank: -1
+                      active: 1
+                      courts: []
+              job-execution-service:
+                security:
+                  issuer: pnc-check-service
+                  token-validity: 160000
+                  subject: pnc-check-service
+                  secret: ${JOB_EXECUTION_SERVICE_SECRET}
+                  authentication-prefix: "Bearer "
+                  claims:
+                    permissions:
+                      - job::update::pnc
+                scheme: http
+                host: ${JOB_EXECUTION_SERVICE_HOST}
+                port: ${JOB_EXECUTION_SERVICE_PORT}
+                url: /job/{jobKey}/{taskId}/update/pnc
+            rules:
+              conditional-rules:
+                - description: Ineligible codes
+                  when-code-is-one-of:
+                    - 1003 #Detained During HM Pleasure
+                    - 1091 #Detained During Secretary Of State's Pleasure (PSNI)
+                    - 4011 #Remittal For Sentence - Conditional Bail
+                    - 4012 #Remittal For Sentence - In Custody
+                    - 4013 #Remittal For Sentence - Unconditional Bail
+                    - 4014 #Commit To Crown Court For Sentence - Unconditional Bail
+                    - 4015 #Commit To Crown Court For Sentence - Conditional Bail
+                    - 4016 #Commit To Crown Court For Sentence - In Custody
+                    - 4017 #Commit To Crown Court For Sentence - I/C Directions To Bail
+                    - 4023 #Remittal for Sentence on Adjournment
+                    - 4027 #Remand On Conditional Bail
+                    - 4028 #Remand in Custody
+                  conditions:
+                    - fail-on-pass: true
+                - description: Sentenced to life (imprisonment, detention and custody for life) and sentence amount is 999
+                  when-code-is-one-of:
+                    - 1002
+                    - 1006
+                    - 1007
+                    - 1022
+                    - 1024
+                    - 1092
+                  conditions:
+                    - sentence-length:
+                        equal-to: 999
+                      fail-on-pass: true
+                - description: Sentenced to 5 years or more, sentence amount is 5 years or more
+                  when-code-is-one-of:
+                    - 1002
+                    - 1006
+                    - 1007
+                    - 1022
+                    - 1024
+                    - 1092
+                  conditions:
+                    - sentence-length:
+                        greater-than-or-equal-to: 5
+                      fail-on-pass: true
+                - description: Sentence of imprisonment or detention in last 10 Years and sentence ended in last 10 years
+                  when-code-is-one-of:
+                    - 1002
+                    - 1006
+                    - 1007
+                    - 1022
+                    - 1024
+                    - 1081
+                    - 1092
+                    - 1096
+                    - 1114
+                  conditions:
+                    - disposal-must-not-end-with-in:
+                        years: 10
+                - description: Suspended sentence in last 10 years the sentence was passed in the last 10 years, and the sentence is suspended
+                  when-code-is-one-of:
+                    - 1089
+                    - 1115
+                    - 1134
+                  conditions:
+                    - fail-on-pass: false
+                      qual-literal-check:
+                        expected-value: S
+                    - disposal-must-not-end-with-in:
+                        years: 10
+                - description: Community Rehabilitation Order in last 10 years and the sentence passed in the last 10 years
+                  when-code-is-one-of:
+                    - 1098
+                  conditions:
+                    - disposal-must-not-end-with-in:
+                        years: 10
+                - description: Community Punishment Order in last 10 years and the sentence passed in the last 10 years
+                  when-code-is-one-of:
+                    - 1099
+                  conditions:
+                    - disposal-must-not-end-with-in:
+                        years: 10
+                - description: Community Punishment & Rehabilitation Order in last 10 years and the sentence passed in the last 10 years
+                  when-code-is-one-of:
+                    - 1102
+                  conditions:
+                    - disposal-must-not-end-with-in:
+                        years: 10
+
+                - description: Drug Treatment and Testing Order in last 10 years and the sentence passed in last 10 years
+                  when-code-is-one-of:
+                    - 1086
+                  conditions:
+                    - disposal-must-not-end-with-in:
+                        years: 10
+
+                - description: Drug Abstinence Order in last 10 years and the sentence passed in the last 10 years
+                  when-code-is-one-of:
+                    - 1101
+                  conditions:
+                    - disposal-must-not-end-with-in:
+                        years: 10
+
+                - description: Community Order in last 10 years and the sentence passed in the last 10 years
+                  when-code-is-one-of:
+                    - 1116
+                  conditions:
+                    - disposal-must-not-end-with-in:
+                        years: 10
+
+                - description: Curfew order and the sentence passed in the last 10 years
+                  when-code-is-one-of:
+                    - 1052
+                  conditions:
+                    - disposal-must-not-end-with-in:
+                        years: 10
+            max-retry-count: 3
+            retry-delay-ms: 1000
+            pnc-check-parallelism: 1
+        security:
+          use-database: false
+          token-validity: 1800000
+          secret: ${SECRET}
+azure:
+  application-insights:
+    instrumentation-key: ${juror.AppInsightsInstrumentationKey:00000000-0000-0000-0000-000000000000}
+logging:
+  level:
+    uk.gov.hmcts.juror: trace
+---
+spring:
+  config:
+    activate:
+      on-profile: integration-test
+
+uk:
+  gov:
+    hmcts:
+      juror:
+        security:
+          use-database: false
+          token-validity: 1800000
+          secret: ${SECRET:WW91clZlcnlWZXJ5VmVyeVNlY3JldEtleVRoYXRJc1NvU2VjcmV0SURvbnRFdmVuS25vd0l0}
+        pnc:
+          check:
+            remote:
+              juror-service:
+                host: localhost
+                port: 8080
+                url: /api/v1/moj/juror-record/pnc/{jurorNumber}
+                security:
+                  issuer: pnc-check-service
+                  token-validity: 160000
+                  subject: pnc-check-service
+                  secret: ${SECRET_JUROR_SERVICE:WW91clZlcnlWZXJ5VmVyeVNlY3JldEtleVRoYXRJc1NvU2VjcmV0SURvbnRFdmVuS25vd0l0}
+              job-execution-service:
+                security:
+                  issuer: pnc-check-service
+                  token-validity: 160000
+                  subject: pnc-check-service
+                  secret: ${SECRET_JOB_EXECUTION_SERVICE:WW91clZlcnlWZXJ5VmVyeVNlY3JldEtleVRoYXRJc1NvU2VjcmV0SURvbnRFdmVuS25vd0l0}
+                  claims:
+                    permissions:
+                      - job::update::pnc
+                url: /{jobKey}/{taskId}/result/pnc
+                port: localhost
+                host: 9090
+                scheme: http #TODO update to https

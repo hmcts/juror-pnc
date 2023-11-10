@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by WT (PNC HENDON DATA CENTRE) -->
+<!-- 
+	Author: 					W Thomas
+	Project:					Juror
+	Document Classification:	PROTECT
+	Version:					1.1
+	Change History:
+	0.1	19 Nov 2009				WT		Original	
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://www.npia.police.uk/juror/schema/v1"
+           targetNamespace="http://www.npia.police.uk/juror/schema/v1"
+           elementFormDefault="qualified" version="1.0">
+    <xs:include schemaLocation="PNCGenericXMLHeader.xsd"/>
+
+    <xs:element name="JurorReference">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:minLength value="0"/>
+                <xs:maxLength value="20"/>
+                <xs:whiteSpace value="collapse"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name="SearchName">
+        <xs:simpleType>
+            <xs:annotation>
+                <xs:documentation>
+                    Surname followed by Forename(s) each separated by
+                    '/'
+                </xs:documentation>
+            </xs:annotation>
+            <xs:restriction base="xs:string">
+                <xs:minLength value="2"/>
+                <xs:maxLength value="54"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name="SearchDateOfBirth">
+        <xs:simpleType>
+            <xs:annotation>
+                <xs:documentation>
+                    Date of Birth, formats DDMMYYYY or --MMYYYY or
+                    ----YYYY
+                </xs:documentation>
+            </xs:annotation>
+            <xs:restriction base="xs:string">
+                <xs:length value="8" fixed="true"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name="PostCode">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:minLength value="0"/>
+                <xs:maxLength value="7"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name="NumberMatchesFound">
+        <xs:simpleType>
+            <xs:restriction base="xs:decimal">
+                <xs:minInclusive value="0"/>
+                <xs:maxInclusive value="20"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name="ErrorReason">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:minLength value="0"/>
+                <xs:maxLength value="70"/>
+                <xs:whiteSpace value="collapse"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="getPersonDetails">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Header" type="PNC_AIHeader_Type" minOccurs="1"/>
+                <xs:element name="Location" type="Location_Type"/>
+                <xs:element ref="JurorReference"/>
+                <xs:element ref="SearchName"/>
+                <xs:element ref="SearchDateOfBirth"/>
+                <xs:element ref="PostCode"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getPersonDetailsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Header" type="PNC_AIHeader_Type" minOccurs="1"/>
+                <xs:element ref="ErrorReason" minOccurs="0"/>
+                <xs:element ref="NumberMatchesFound" minOccurs="1"/>
+                <xs:element ref="JurorReference" minOccurs="1"/>
+                <xs:element name="Details" type="PersonDetails" minOccurs="0" nillable="true"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="PersonDetails">
+        <xs:sequence>
+            <xs:element maxOccurs="50" minOccurs="0" name="Person"
+                        nillable="true" type="Person"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Person">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="PncId" nillable="true"
+                        type="xs:string"/>
+            <xs:element minOccurs="0" name="FileName" nillable="true"
+                        type="xs:string"/>
+            <xs:element minOccurs="0" name="DateOfBirth" nillable="true"
+                        type="xs:string"/>
+            <xs:element minOccurs="0" name="PostCode" nillable="true"
+                        type="xs:string"/>
+            <xs:element maxOccurs="999" minOccurs="0" name="Disposals"
+                        nillable="true" type="Disposal"/>
+            <xs:element minOccurs="0" name="OnBail" nillable="true"
+                        type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Disposal">
+        <xs:sequence>
+            <xs:element minOccurs="1" name="DisposalCode"
+                        nillable="true" type="xs:string"/>
+            <xs:element minOccurs="1" name="DisposalEffectiveDate"
+                        nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="FineAmount" nillable="true"
+                        type="xs:string"/>
+            <xs:element minOccurs="0" name="FineUnits" nillable="true"
+                        type="xs:string"/>
+            <xs:element minOccurs="0" name="QualAmount" nillable="true"
+                        type="xs:string"/>
+            <xs:element minOccurs="0" name="QualLiteral" nillable="true"
+                        type="xs:string"/>
+            <xs:element minOccurs="0" name="QualPeriod" nillable="true"
+                        type="xs:string"/>
+            <xs:element minOccurs="0" name="SentenceAmount"
+                        nillable="true" type="xs:string"/>
+            <xs:element minOccurs="0" name="SentencePeriod"
+                        nillable="true" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

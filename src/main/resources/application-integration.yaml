@@ -1,0 +1,55 @@
+uk:
+  gov:
+    hmcts:
+      juror:
+        pnc:
+          check:
+            pnc-check-parallelism: 5
+            remote:
+              juror-service:
+                scheme: http
+                host: localhost
+                port: 8085
+                security:
+                  issuer: pnc-check-service
+                  token-validity: 160000
+                  subject: pnc-check-service
+                  secret: ${JUROR_SERVICE_SECRET:WW91clZlcnlWZXJ5VmVyeVNlY3JldEtleVRoYXRJc1NvU2VjcmV0SURvbnRFdmVuS25vd0l0}
+                  claims:
+                    tbc: tbc
+              job-execution-service:
+                security:
+                  issuer: pnc-check-service
+                  token-validity: 160000
+                  subject: pnc-check-service
+                  secret: ${JOB_EXECUTION_SERVICE_SECRET:WW91clZlcnlWZXJ5VmVyeVNlY3JldEtleVRoYXRJc1NvU2VjcmV0SURvbnRFdmVuS25vd0l0}
+                  claims:
+                    permissions:
+                      - job::update::pnc
+                scheme: http
+                host: localhost
+                port: 8085
+              police-national-computer-service:
+                pncTerminal: pncTerminal
+                pncUserId: pncUserId
+                pncMode: trng
+                pncAuthorisation: pncAuthorisation
+                pncTranCode: LO
+                originator: originator
+                reasonCode: 6
+                gatewayId: gatewayId
+                requestLocation: requestLocation
+                namespace: http://www.npia.police.uk/juror/schema/v1
+                username: jurordev
+                password: jurorpass
+                scheme: http
+                host: localhost
+                port: 8085
+                url: /WebServiceTestStub/WebServiceTest
+                request-method: getPersonDetails
+                response-method: getPersonDetailsResponse
+        security:
+          secret: ${SECRET:WW91clZlcnlWZXJ5VmVyeVNlY3JldEtleVRoYXRJc1NvU2VjcmV0SURvbnRFdmVuS25vd0l0}
+logging:
+  level:
+    uk.gov.hmcts.juror: trace

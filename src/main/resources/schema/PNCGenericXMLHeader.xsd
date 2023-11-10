@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 U (http://www.xmlspy.com) by Michael Pace (Securicor Information Systems) -->
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Daniel Ebb (TRW Systems) -->
+<!-- 	PNCGenericXMLHeader.xsd -->
+<!-- 	TRW/Securicor Information Systems Ltd.-->
+<PNC_AI:schema xmlns:PNC_AI="http://www.w3.org/2001/XMLSchema">
+    <!--Issue 1.0-->
+    <!--GRB:PNC 06/02/2004 Initial Drafting-->
+    <!--Issue 1.1-->
+    <!--GRB:PNC 30/06/2004-->
+    <!--1. Addition of PNCSystemError and PNCXMLError elements-->
+    <!--2. Removal of PNC_AIError_Type->Description enumeration values-->
+    <!--Issue 1.2-->
+    <!--DW:PNC 27/5/2010-->
+    <!--Align with Airwave version-->
+    <!--WT:PNC 20/2/2011-->
+    <!--Add Drivers Transaction Codes to enumeration-->
+    <!--WT:PNC 04/2/2013-->
+    <!--Add Juror Transaction Code to enumeration-->
+    <!---->
+    <!--Simple Types	-->
+    <PNC_AI:simpleType name="LocalDateTime_Type">
+        <PNC_AI:annotation>
+            <PNC_AI:documentation>Time base is UTC, format YYYYMMDDhh:mm:ss</PNC_AI:documentation>
+        </PNC_AI:annotation>
+        <PNC_AI:restriction base="PNC_AI:string">
+            <PNC_AI:length value="16" fixed="true"/>
+        </PNC_AI:restriction>
+    </PNC_AI:simpleType>
+    <PNC_AI:simpleType name="PncTerminal_Type">
+        <PNC_AI:annotation>
+            <PNC_AI:documentation>PNC Terminal ID format VFFnnnnn, V = VDU, FF = Force Abbreviation, nnnnn = Terminal
+                Number
+            </PNC_AI:documentation>
+        </PNC_AI:annotation>
+        <PNC_AI:restriction base="PNC_AI:string">
+            <PNC_AI:length value="8" fixed="true"/>
+        </PNC_AI:restriction>
+    </PNC_AI:simpleType>
+    <PNC_AI:simpleType name="PncUserid_Type">
+        <PNC_AI:annotation>
+            <PNC_AI:documentation>User ID format ffxxxxxx, ff = Force Code, xxxxxx = Identify for the officer
+            </PNC_AI:documentation>
+        </PNC_AI:annotation>
+        <PNC_AI:restriction base="PNC_AI:string">
+            <PNC_AI:minLength value="5"/>
+            <PNC_AI:maxLength value="8"/>
+        </PNC_AI:restriction>
+    </PNC_AI:simpleType>
+    <PNC_AI:simpleType name="PncMode_Type">
+        <PNC_AI:annotation>
+            <PNC_AI:documentation>PNC Mode, values LIVE, DEMO, TRNG or NULL</PNC_AI:documentation>
+        </PNC_AI:annotation>
+        <PNC_AI:restriction base="PNC_AI:string">
+            <PNC_AI:length value="4" fixed="true"/>
+            <PNC_AI:enumeration value="LIVE"/>
+            <PNC_AI:enumeration value="DEMO"/>
+            <PNC_AI:enumeration value="TRNG"/>
+            <PNC_AI:enumeration value="NULL"/>
+        </PNC_AI:restriction>
+    </PNC_AI:simpleType>
+    <PNC_AI:simpleType name="PncAuthorisation_Type">
+        <PNC_AI:annotation>
+            <PNC_AI:documentation>PNC Authorisation token format ffccFFyy, ff = Force Code, Station Code always '00', FF
+                = Force Abbreviation, yy = PNC Enquiry Access Token
+            </PNC_AI:documentation>
+        </PNC_AI:annotation>
+        <PNC_AI:restriction base="PNC_AI:string">
+            <PNC_AI:length value="8" fixed="true"/>
+        </PNC_AI:restriction>
+    </PNC_AI:simpleType>
+    <PNC_AI:simpleType name="PncTranCode_Type">
+        <PNC_AI:annotation>
+            <PNC_AI:documentation>PNC Transaction Code, format ttt, consisting of values '@VS', '@VE', '@VK' for
+                example
+            </PNC_AI:documentation>
+        </PNC_AI:annotation>
+        <PNC_AI:restriction base="PNC_AI:string">
+            <PNC_AI:length value="3" fixed="true"/>
+            <PNC_AI:enumeration value="@VE"/>
+            <PNC_AI:enumeration value="@VK"/>
+            <PNC_AI:enumeration value="@VS"/>
+            <PNC_AI:enumeration value="@NE"/>
+            <PNC_AI:enumeration value="@NP"/>
+            <PNC_AI:enumeration value="@DS"/>
+            <PNC_AI:enumeration value="@DE"/>
+            <PNC_AI:enumeration value="#LO"/>
+        </PNC_AI:restriction>
+    </PNC_AI:simpleType>
+    <PNC_AI:simpleType name="Originator_Type">
+        <PNC_AI:restriction base="PNC_AI:string">
+            <PNC_AI:minLength value="0"/>
+            <PNC_AI:maxLength value="20"/>
+        </PNC_AI:restriction>
+    </PNC_AI:simpleType>
+    <PNC_AI:simpleType name="ReasonCode_Type">
+        <PNC_AI:annotation>
+            <PNC_AI:documentation>Reason Code, format rr, rr = one or two digit number range 0 to 10
+            </PNC_AI:documentation>
+        </PNC_AI:annotation>
+        <PNC_AI:restriction base="PNC_AI:integer">
+            <PNC_AI:minInclusive value="0"/>
+            <PNC_AI:maxInclusive value="10"/>
+        </PNC_AI:restriction>
+    </PNC_AI:simpleType>
+    <PNC_AI:simpleType name="SequenceNumber_Type">
+        <PNC_AI:annotation>
+            <PNC_AI:documentation>Sequence number to tie request/response pairs together for audit trail
+            </PNC_AI:documentation>
+        </PNC_AI:annotation>
+        <PNC_AI:restriction base="PNC_AI:long">
+            <PNC_AI:minInclusive value="0"/>
+        </PNC_AI:restriction>
+    </PNC_AI:simpleType>
+    <PNC_AI:simpleType name="Location_Type">
+        <PNC_AI:restriction base="PNC_AI:string">
+            <PNC_AI:minLength value="4"/>
+            <PNC_AI:maxLength value="48"/>
+        </PNC_AI:restriction>
+    </PNC_AI:simpleType>
+    <PNC_AI:simpleType name="Gateway_Type">
+        <PNC_AI:annotation>
+            <PNC_AI:documentation>Unique Gateway/System/Application identifier</PNC_AI:documentation>
+        </PNC_AI:annotation>
+        <PNC_AI:restriction base="PNC_AI:string">
+            <PNC_AI:minLength value="8"/>
+            <PNC_AI:maxLength value="32"/>
+        </PNC_AI:restriction>
+    </PNC_AI:simpleType>
+    <PNC_AI:simpleType name="AlertReference_Type">
+        <PNC_AI:annotation>
+            <PNC_AI:documentation>Either PNCID, VRM, SCRO URN or SISID</PNC_AI:documentation>
+        </PNC_AI:annotation>
+        <PNC_AI:restriction base="PNC_AI:string">
+            <PNC_AI:minLength value="0"/>
+            <PNC_AI:maxLength value="22"/>
+        </PNC_AI:restriction>
+    </PNC_AI:simpleType>
+    <PNC_AI:simpleType name="AlertReports_Type">
+        <PNC_AI:annotation>
+            <PNC_AI:documentation>Body text of alert message</PNC_AI:documentation>
+        </PNC_AI:annotation>
+        <PNC_AI:restriction base="PNC_AI:string">
+            <PNC_AI:minLength value="0"/>
+            <PNC_AI:maxLength value="88"/>
+        </PNC_AI:restriction>
+    </PNC_AI:simpleType>
+    <PNC_AI:simpleType name="AlertPriority_Type">
+        <PNC_AI:annotation>
+            <PNC_AI:documentation>Flag indicating the priority level of the alert message</PNC_AI:documentation>
+        </PNC_AI:annotation>
+        <PNC_AI:restriction base="PNC_AI:integer">
+            <PNC_AI:minInclusive value="0"/>
+            <PNC_AI:maxInclusive value="99"/>
+        </PNC_AI:restriction>
+    </PNC_AI:simpleType>
+    <PNC_AI:simpleType name="PageHeading_Type">
+        <PNC_AI:annotation>
+            <PNC_AI:documentation>Optional Headings for pages relating to Schengen</PNC_AI:documentation>
+        </PNC_AI:annotation>
+        <PNC_AI:restriction base="PNC_AI:string">
+            <PNC_AI:minLength value="1"/>
+            <PNC_AI:maxLength value="50"/>
+        </PNC_AI:restriction>
+    </PNC_AI:simpleType>
+    <PNC_AI:simpleType name="SISID_Type">
+        <PNC_AI:annotation>
+            <PNC_AI:documentation>Schengen Information System ID</PNC_AI:documentation>
+        </PNC_AI:annotation>
+        <PNC_AI:restriction base="PNC_AI:string">
+            <PNC_AI:minLength value="1"/>
+            <PNC_AI:maxLength value="22"/>
+        </PNC_AI:restriction>
+    </PNC_AI:simpleType>
+    <PNC_AI:simpleType name="ErrorText_Type">
+        <PNC_AI:restriction base="PNC_AI:string">
+            <PNC_AI:minLength value="0"/>
+        </PNC_AI:restriction>
+    </PNC_AI:simpleType>
+    <!--End Simple Types-->
+    <!---->
+    <!--Complex Types-->
+    <PNC_AI:complexType name="PNC_AINoTrace_Type">
+        <PNC_AI:sequence>
+            <PNC_AI:element name="Description">
+                <PNC_AI:simpleType>
+                    <PNC_AI:restriction base="PNC_AI:string">
+                        <PNC_AI:maxLength value="256"/>
+                        <PNC_AI:minLength value="0"/>
+                    </PNC_AI:restriction>
+                </PNC_AI:simpleType>
+            </PNC_AI:element>
+        </PNC_AI:sequence>
+    </PNC_AI:complexType>
+    <PNC_AI:complexType name="PNC_AIError_Type">
+        <PNC_AI:sequence>
+            <PNC_AI:element name="Code">
+                <PNC_AI:simpleType>
+                    <PNC_AI:restriction base="PNC_AI:integer">
+                        <PNC_AI:minInclusive value="0"/>
+                        <PNC_AI:maxInclusive value="999"/>
+                    </PNC_AI:restriction>
+                </PNC_AI:simpleType>
+            </PNC_AI:element>
+            <PNC_AI:element name="Description">
+                <PNC_AI:simpleType>
+                    <PNC_AI:restriction base="PNC_AI:string">
+                        <PNC_AI:maxLength value="256"/>
+                        <PNC_AI:minLength value="0"/>
+                    </PNC_AI:restriction>
+                </PNC_AI:simpleType>
+            </PNC_AI:element>
+        </PNC_AI:sequence>
+    </PNC_AI:complexType>
+    <PNC_AI:complexType name="PNC_AIAlert_Type">
+        <PNC_AI:sequence>
+            <PNC_AI:element name="Reference" type="AlertReference_Type"/>
+            <PNC_AI:element name="Priority" type="AlertPriority_Type"/>
+            <PNC_AI:element name="Reports" type="AlertReports_Type"/>
+        </PNC_AI:sequence>
+    </PNC_AI:complexType>
+    <PNC_AI:complexType name="PNC_AIHeader_Type">
+        <PNC_AI:sequence>
+            <PNC_AI:element name="SequenceNumber" type="SequenceNumber_Type"/>
+            <PNC_AI:element name="LocalDateTime" type="LocalDateTime_Type"/>
+            <PNC_AI:element name="PncTerminal" type="PncTerminal_Type"/>
+            <PNC_AI:element name="PncUserid" type="PncUserid_Type"/>
+            <PNC_AI:element name="PncMode" type="PncMode_Type"/>
+            <PNC_AI:element name="PncAuthorisation" type="PncAuthorisation_Type"/>
+            <PNC_AI:element name="PncTranCode" type="PncTranCode_Type"/>
+            <PNC_AI:element name="Originator" type="Originator_Type"/>
+            <PNC_AI:element name="ReasonCode" type="ReasonCode_Type"/>
+            <PNC_AI:element name="GatewayID" type="Gateway_Type"/>
+        </PNC_AI:sequence>
+    </PNC_AI:complexType>
+    <!--End Complex Types-->
+    <!---->
+    <!--XML Elements-->
+    <PNC_AI:element name="PNCSystemError">
+        <PNC_AI:complexType>
+            <PNC_AI:sequence>
+                <PNC_AI:element name="Reference" type="ErrorText_Type"/>
+                <PNC_AI:element name="SystemError" type="ErrorText_Type"/>
+            </PNC_AI:sequence>
+        </PNC_AI:complexType>
+    </PNC_AI:element>
+    <PNC_AI:element name="PNCXMLError">
+        <PNC_AI:complexType>
+            <PNC_AI:sequence>
+                <PNC_AI:element name="Reference" type="ErrorText_Type"/>
+                <PNC_AI:element name="XMLError" type="ErrorText_Type"/>
+            </PNC_AI:sequence>
+        </PNC_AI:complexType>
+    </PNC_AI:element>
+    <!--End XML Elements-->
+</PNC_AI:schema>

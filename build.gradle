@@ -165,8 +165,8 @@ project.tasks['check'].dependsOn integration
 
 sonarqube {
     properties {
-        property "sonar.projectName", "Juror :: pnc-check-serevice"
-        property "sonar.projectKey", "uk.gov.hmcts.juror:pnc-check-serevice"
+        property "sonar.projectName", "Juror :: pnc"
+        property "sonar.projectKey", "uk.gov.hmcts.juror:pnc"
     }
 }
 

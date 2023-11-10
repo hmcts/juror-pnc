@@ -1,0 +1,135 @@
+#!groovy
+
+@Library("Infrastructure")
+
+import uk.gov.hmcts.contino.GradleBuilder
+
+def type = "java"
+def product = "juror"
+def component = "pnc"
+
+def branchesToSync = []
+
+GradleBuilder builder = new GradleBuilder(this, product)
+
+withPipeline(type, product, component) {
+  //enableDbMigration(product)
+  enableSlackNotifications('#juror-build-notices')
+  syncBranchesWithMaster(branchesToSync)
+
+  afterAlways('test') {
+    builder.gradle('jacocoTestReport')
+
+    publishHTML target: [
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : "build/reports/checkstyle",
+      reportFiles          : "main.html",
+      reportName           : "Checkstyle Main Report"
+    ]
+
+    publishHTML target: [
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : "build/reports/checkstyle",
+      reportFiles          : "test.html",
+      reportName           : "Checkstyle Test Report"
+    ]
+
+    publishHTML target: [
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : "build/reports/checkstyle",
+      reportFiles          : "integrationTest.html",
+      reportName           : "Checkstyle Integration Test Report"
+    ]
+
+    publishHTML target: [
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : "build/reports/checkstyle",
+      reportFiles          : "smokeTest.html",
+      reportName           : "Checkstyle Smoke Test Report"
+    ]
+
+    publishHTML target: [
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : "build/reports/checkstyle",
+      reportFiles          : "functionalTest.html",
+      reportName           : "Checkstyle Functional Test Report"
+    ]
+
+    publishHTML target: [
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : "build/reports/pmd",
+      reportFiles          : "main.html",
+      reportName           : "PMD Main Report"
+    ]
+
+    publishHTML target: [
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : "build/reports/pmd",
+      reportFiles          : "test.html",
+      reportName           : "PMD Test Report"
+    ]
+
+    publishHTML target: [
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : "build/reports/pmd",
+      reportFiles          : "integrationTest.html",
+      reportName           : "PMD Integration Test Report"
+    ]
+
+    publishHTML target: [
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : "build/reports/pmd",
+      reportFiles          : "smokeTest.html",
+      reportName           : "PMD Smoke Test Report"
+    ]
+
+    publishHTML target: [
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : "build/reports/pmd",
+      reportFiles          : "functionalTest.html",
+      reportName           : "PMD Functional Test Report"
+    ]
+
+    publishHTML target: [
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : "build/reports/tests/test",
+      reportFiles          : "index.html",
+      reportName           : "Unit Test Report"
+    ]
+
+    publishHTML target: [
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : "build/reports/tests/integration",
+      reportFiles          : "index.html",
+      reportName           : "Integration Test Report"
+    ]
+  }
+
+  afterFailure('test') {
+    junit '**/test-results/integration/*.xml'
+  }
+}

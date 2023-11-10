@@ -1,0 +1,10 @@
+{
+  "juror_number": "111111112",
+  "date_of_birth": "01-01-2000",
+  "post_code": "AB1CD2",
+  "name": {
+    "first_name": "FNAMEFNAMEFNAMEFNAME",
+    "middle_name": "LNAMEFNAMEFNAMEFNAMEFNAME",
+    "last_name": "SNAMEFNAMEFNAMEFNAMEFNAME"
+  }
+}

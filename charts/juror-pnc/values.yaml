@@ -1,0 +1,12 @@
+java:
+  applicationPort: 8080
+  image: 'sdshmctspublic.azurecr.io/juror/pnc:latest'
+  ingressHost: juror-pnc.{{ .Values.global.environment }}.platform.hmcts.net
+  aadIdentityName: juror
+  keyVaults:
+    juror:
+      secrets:
+        - name: AppInsightsInstrumentationKey
+          alias: azure.application-insights.instrumentation-key
+        - name: app-insights-connection-string
+          alias: app-insights-connection-string

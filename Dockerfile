@@ -5,5 +5,5 @@ FROM hmctspublic.azurecr.io/base/java:17-distroless
 COPY lib/applicationinsights.json /opt/app/
 COPY build/libs/pnc-check-service.jar /opt/app/
 
-EXPOSE 8084
+EXPOSE 8080
 CMD [ "pnc-check-service.jar" ]

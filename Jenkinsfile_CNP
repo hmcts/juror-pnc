@@ -10,10 +10,40 @@ def component = "pnc"
 
 def branchesToSync = []
 
+def secrets = [
+  'juror-${env}': [
+    secret('app-insights-connection-string', 'app-insights-connection-string'),
+    secret('AppInsightsInstrumentationKey', 'azure.application-insights.instrumentation-key'),
+    secret('pnc-SECRET', 'SECRET'),
+    secret('pnc-SERVICE-USERNAME', 'PNC_SERVICE_USERNAME'),
+    secret('pnc-SERVICE-PASSWORD', 'PNC_SERVICE_PASSWORD'),
+    secret('api-SERVICE-SECRET', 'JUROR_SERVICE_SECRET'),
+    secret('job-SERVICE-SECRET', 'JOB_EXECUTION_SERVICE_SECRET'),
+    secret('pnc-SERVICE-PNC-TERMINAL', 'PNC_SERVICE_PNC_TERMINAL'),
+    secret('pnc-SERVICE-PNC-USERID', 'PNC_SERVICE_PNC_USERID'),
+    secret('pnc-SERVICE-PNC-MODE', 'PNC_SERVICE_PNC_MODE'),
+    secret('pnc-SERVICE-PNC-AUTHORISATION', 'PNC_SERVICE_PNC_AUTHORISATION'),
+    secret('pnc-SERVICE-PNC-TRAN-CODE', 'PNC_SERVICE_PNC_TRAN_CODE'),
+    secret('pnc-SERVICE-ORIGINATOR', 'PNC_SERVICE_ORIGINATOR'),
+    secret('pnc-SERVICE-REASON-CODE', 'PNC_SERVICE_REASON_CODE'),
+    secret('pnc-SERVICE-GATEWAY-ID', 'PNC_SERVICE_GATEWAY_ID'),
+    secret('pnc-SERVICE-REQUEST-LOCATION', 'PNC_SERVICE_REQUEST_LOCATION'),
+    ],
+]
+
+static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
+  [$class     : 'AzureKeyVaultSecret',
+   secretType : 'Secret',
+   name       : secretName,
+   version    : '',
+   envVariable: envVar
+  ]
+}
+
 GradleBuilder builder = new GradleBuilder(this, product)
 
 withPipeline(type, product, component) {
-  //enableDbMigration(product)
+  loadVaultSecrets(secrets)
   enableSlackNotifications('#juror-build-notices')
   syncBranchesWithMaster(branchesToSync)
 

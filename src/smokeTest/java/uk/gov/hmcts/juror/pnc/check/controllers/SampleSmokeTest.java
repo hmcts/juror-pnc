@@ -1,4 +1,4 @@
-package uk.gov.hmcts.juror.scheduler.pnc.check.controllers;
+package uk.gov.hmcts.juror.pnc.check.controllers;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;

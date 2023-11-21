@@ -1,6 +1,41 @@
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
+  keyVaults:
+    juror:
+      secrets:
+        - name: AppInsightsInstrumentationKey
+          alias: azure.application-insights.instrumentation-key
+        - name: app-insights-connection-string
+          alias: app-insights-connection-string
+        - name: pnc-SECRET
+          alias: SECRET
+        - name: pnc-SERVICE-USERNAME
+          alias: PNC_SERVICE_USERNAME
+        - name: pnc-SERVICE-PASSWORD
+          alias: PNC_SERVICE_PASSWORD
+        - name: api-SERVICE-SECRET
+          alias: JUROR_SERVICE_SECRET
+        - name: job-SERVICE-SECRET
+          alias: JOB_EXECUTION_SERVICE_SECRET
+        - name: pnc-SERVICE-PNC-TERMINAL
+          alias: PNC_SERVICE_PNC_TERMINAL
+        - name: pnc-SERVICE-PNC-USERID
+          alias: PNC_SERVICE_PNC_USERID
+        - name: pnc-SERVICE-PNC-MODE
+          alias: PNC_SERVICE_PNC_MODE
+        - name: pnc-SERVICE-PNC-AUTHORISATION
+          alias: PNC_SERVICE_PNC_AUTHORISATION
+        - name: pnc-SERVICE-PNC-TRAN-CODE
+          alias: PNC_SERVICE_PNC_TRAN_CODE
+        - name: pnc-SERVICE-ORIGINATOR
+          alias: PNC_SERVICE_ORIGINATOR
+        - name: pnc-SERVICE-REASON-CODE
+          alias: PNC_SERVICE_REASON_CODE
+        - name: pnc-SERVICE-GATEWAY-ID
+          alias: PNC_SERVICE_GATEWAY_ID
+        - name: pnc-SERVICE-REQUEST-LOCATION
+          alias: PNC_SERVICE_REQUEST_LOCATION
   environment:
     PNC_SERVICE_HOST: juror-pnc.staging.platform.hmcts.net
     PNC_SERVICE_POST: 443

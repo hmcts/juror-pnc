@@ -35,7 +35,7 @@ uk:
                 pncAuthorisation: ${PNC_SERVICE_PNC_AUTHORISATION}
                 pncTranCode: ${PNC_SERVICE_PNC_TRAN_CODE}
                 originator: ${PNC_SERVICE_ORIGINATOR}
-                reasonCode: ${PNC_SERVICE_RC}
+                reasonCode: ${PNC_SERVICE_REASON_CODE}
                 gatewayId: ${PNC_SERVICE_GATEWAY_ID}
                 requestLocation: ${PNC_SERVICE_REQUEST_LOCATION}
                 namespace: http://www.npia.police.uk/juror/schema/v1

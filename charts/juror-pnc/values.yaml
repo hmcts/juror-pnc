@@ -33,7 +33,7 @@ java:
         - name: pnc-SERVICE-ORIGINATOR
           alias: PNC_SERVICE_ORIGINATOR
         - name: pnc-SERVICE-RC
-          alias: PNC_SERVICE_REASON_CODE
+          alias: PNC_SERVICE_RC
         - name: pnc-SERVICE-GATEWAY-ID
           alias: PNC_SERVICE_GATEWAY_ID
         - name: pnc-SERVICE-REQUEST-LOCATION

@@ -23,9 +23,7 @@ def secrets = [
     secret('pnc-SERVICE-PNC-USERID', 'PNC_SERVICE_PNC_USERID'),
     secret('pnc-SERVICE-PNC-MODE', 'PNC_SERVICE_PNC_MODE'),
     secret('pnc-SERVICE-PNC-AUTHORISATION', 'PNC_SERVICE_PNC_AUTHORISATION'),
-    secret('pnc-SERVICE-PNC-TRAN-CODE', 'PNC_SERVICE_PNC_TRAN_CODE'),
     secret('pnc-SERVICE-ORIGINATOR', 'PNC_SERVICE_ORIGINATOR'),
-    secret('pnc-SERVICE-REASON-CODE', 'PNC_SERVICE_REASON_CODE'),
     secret('pnc-SERVICE-GATEWAY-ID', 'PNC_SERVICE_GATEWAY_ID'),
     secret('pnc-SERVICE-REQUEST-LOCATION', 'PNC_SERVICE_REQUEST_LOCATION')
     ],
@@ -46,6 +44,9 @@ withPipeline(type, product, component) {
   loadVaultSecrets(secrets)
   enableSlackNotifications('#juror-build-notices')
   syncBranchesWithMaster(branchesToSync)
+
+  env.PNC_SERVICE_PNC_TRAN_CODE = 'LO'
+  env.PNC_SERVICE_REASON_CODE = 6
 
   afterAlways('test') {
     builder.gradle('jacocoTestReport')

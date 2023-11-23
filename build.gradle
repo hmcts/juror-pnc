@@ -293,7 +293,7 @@ dependencies {
 mainClassName = 'uk.gov.hmcts.juror.pnc.check.Application'
 
 bootJar {
-    archiveFileName = "pnc-check-service.jar"
+    archiveFileName = "juror-pnc.jar"
 
     manifest {
         attributes('Implementation-Version': project.version.toString())

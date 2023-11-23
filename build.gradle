@@ -285,7 +285,7 @@ dependencies {
     }, version: springVersion
 
     //Other
-    implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.2'
     jaxb("org.glassfish.jaxb:jaxb-xjc")
     jaxb("org.glassfish.jaxb:jaxb-runtime")
 }

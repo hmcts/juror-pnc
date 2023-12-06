@@ -255,7 +255,7 @@ dependencies {
     testImplementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
     testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
 
-    implementation 'org.jetbrains:annotations:20.1.0'
+    implementation 'org.jetbrains:annotations:24.1.0'
     testImplementation 'junit:junit:4.13.2'
 
     // Data Mapping

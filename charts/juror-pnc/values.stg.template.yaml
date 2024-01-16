@@ -1,0 +1,7 @@
+java:
+  image: ${IMAGE_NAME}
+  ingressHost: ${SERVICE_FQDN}
+  environment:
+    PNC_SERVICE_HOST: juror-pnc.staging.platform.hmcts.net
+    JUROR_SERVICE_HOST: juror-api.staging.platform.hmcts.net
+    JOB_EXECUTION_SERVICE_HOST: juror-scheduler-execution.staging.platform.hmcts.net

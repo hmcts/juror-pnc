@@ -1,9 +1,4 @@
+# Don't modify this file, it is only needed for the pipeline to set the image and ingressHost
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
-  environment:
-    #The following have been updated with NLE values
-    PNC_SERVICE_PNC_TRAN_CODE: '#LO'
-    PNC_SERVICE_PNC_TERMINAL: LCRTS001
-    PNC_SERVICE_PNC_AUTHORISATION: 2K01JV01
-    PNC_SERVICE_GATEWAY_ID: JVJVS001

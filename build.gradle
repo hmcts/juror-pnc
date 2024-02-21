@@ -212,7 +212,7 @@ repositories {
 }
 
 ext {
-    log4JVersion = "2.22.1"
+    log4JVersion = "2.23.0"
     springVersion = "3.2.2"
     springSeceurityVersion = "6.1.4"
     lombokVersion = "1.18.30"

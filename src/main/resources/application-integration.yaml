@@ -52,4 +52,4 @@ uk:
           secret: ${SECRET:WW91clZlcnlWZXJ5VmVyeVNlY3JldEtleVRoYXRJc1NvU2VjcmV0SURvbnRFdmVuS25vd0l0}
 logging:
   level:
-    uk.gov.hmcts.juror: trace
+    uk.gov.hmcts.juror: info

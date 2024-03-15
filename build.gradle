@@ -4,14 +4,14 @@ plugins {
     id 'pmd'
     id 'jacoco'
     id 'io.spring.dependency-management' version '1.1.4'
-    id 'org.springframework.boot' version '3.2.0'
+    id 'org.springframework.boot' version '3.2.3'
     id 'org.owasp.dependencycheck' version '9.0.9'
     id 'com.github.ben-manes.versions' version '0.51.0'
     id 'org.sonarqube' version '4.4.1.3373'
 }
 
 group = 'uk.gov.hmcts.juror'
-version = '0.0.1'
+version = '0.0.2'
 
 java {
     toolchain {
@@ -223,7 +223,6 @@ ext['snakeyaml.version'] = '2.0'
 dependencies {
 
     //Dependency overrides (Can be removed once other dependencies get updates to resolve security issues)
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.2'
     implementation 'ch.qos.logback:logback-classic:1.5.3'
     implementation 'ch.qos.logback:logback-core:1.5.3'
     //END
@@ -260,7 +259,7 @@ dependencies {
     testImplementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
     testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
 
-    implementation 'org.jetbrains:annotations:20.1.0'
+    implementation 'org.jetbrains:annotations:24.1.0'
     testImplementation 'junit:junit:4.13.2'
     runtimeOnly(group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '3.5.1')
 

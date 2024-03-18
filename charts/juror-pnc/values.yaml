@@ -20,12 +20,10 @@ java:
           alias: JUROR_SERVICE_SECRET
         - name: scheduler-execution-SECRET
           alias: JOB_EXECUTION_SERVICE_SECRET
-        - name: pncketstore-64
-          alias: pnckeystore-64
+        - name: pnckeystore-64
         - name: pnctrusted-64
-          alias: pnctrusted-64
         - name: pncstore-password
-          alias: pncstore-password
+          alias: PNCSTORE_PASSWORD
   environment:
     PNC_SERVICE_HOST: juror-pnc.{{ .Values.global.environment }}.platform.hmcts.net
     PNC_SERVICE_POST: 443

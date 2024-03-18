@@ -68,6 +68,7 @@ public class ApplicationBeans {
         return restTemplateBuilder(remoteConfig.getJurorService(), jwtService);
     }
 
+    @SuppressWarnings("removal")
     private RestTemplateBuilder restTemplateBuilder(final WebConfig webConfig,
                                                     final JwtService jwtService) {
         final List<ClientHttpRequestInterceptor> clientHttpRequestInterceptorList =

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.juror.pnc.check.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,7 @@ public class JurorController {
 
 
     @PostMapping("/bulk")
+    @Operation(summary = "Process multiple PNC checks for jurors")
     @PreAuthorize("hasAuthority('" + PermissionConstants.CHECK_BULK + "')")
     public ResponseEntity<Void> processJurorPncChecksBulk(
         @Valid @RequestBody JurorCheckRequestBulk jurorCheckRequests
@@ -47,7 +49,8 @@ public class JurorController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping()
+    @PostMapping
+    @Operation(summary = "Process a single PNC check for a juror")
     @PreAuthorize("hasAuthority('" + PermissionConstants.CHECK + "')")
     public ResponseEntity<Void> processJurorPncCheckSingle(
         @Valid @RequestBody JurorCheckRequest jurorCheckRequest) {

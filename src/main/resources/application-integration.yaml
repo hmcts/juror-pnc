@@ -48,6 +48,8 @@ uk:
                 url: /WebServiceTestStub/WebServiceTest
                 request-method: getPersonDetails
                 response-method: getPersonDetailsResponse
+                ssl:
+                proxy:
         security:
           secret: ${SECRET:WW91clZlcnlWZXJ5VmVyeVNlY3JldEtleVRoYXRJc1NvU2VjcmV0SURvbnRFdmVuS25vd0l0}
 logging:

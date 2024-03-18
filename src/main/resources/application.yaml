@@ -48,12 +48,14 @@ uk:
                 request-method: getPersonDetails
                 response-method: getPersonDetailsResponse
                 ssl:
+                  enable: true
                   truststore-location: /mnt/secrets/juror/pnctrusted-64
                   truststore-password: ${PNCSTORE_PASSWORD}
                   keystore-location: /mnt/secrets/juror/pnckeystore-64
                   keystore-password: ${PNCSTORE_PASSWORD}
                   key-password: ${PNCSTORE_PASSWORD}
                 proxy:
+                  enable: true
                   scheme: http
                   host: 10.24.1.253
                   port: 8080

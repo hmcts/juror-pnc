@@ -58,7 +58,7 @@ uk:
                   host: 10.24.1.253
                   port: 8080
               juror-service:
-                scheme: http
+                scheme: https
                 host: ${JUROR_SERVICE_HOST}
                 port: ${JUROR_SERVICE_PORT}
                 url: /api/v1/moj/juror-record/pnc/{jurorNumber}

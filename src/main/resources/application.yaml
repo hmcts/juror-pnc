@@ -39,7 +39,7 @@ uk:
                 gatewayId: ${PNC_SERVICE_GATEWAY_ID}
                 requestLocation: ${PNC_SERVICE_REQUEST_LOCATION}
                 namespace: http://www.npia.police.uk/juror/schema/v1
-                scheme: http
+                scheme: https
                 host: ${PNC_SERVICE_HOST}
                 port: ${PNC_SERVICE_POST}
                 url: /WebServiceTestStub/WebServiceTest

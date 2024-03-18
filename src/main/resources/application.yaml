@@ -48,11 +48,11 @@ uk:
                 request-method: getPersonDetails
                 response-method: getPersonDetailsResponse
                 ssl:
-                  TrustStoreLocation: /mnt/secrets/juror/pnctrusted-64
-                  TrustStorePassword: ${PNCSTORE_PASSWORD}
-                  KeyStoreLocation: /mnt/secrets/juror/pnckeystore-64
-                  KeyStorePassword: ${PNCSTORE_PASSWORD}
-                  KeyPassword: ${PNCSTORE_PASSWORD}
+                  truststore-location: /mnt/secrets/juror/pnctrusted-64
+                  truststore-password: ${PNCSTORE_PASSWORD}
+                  keystore-location: /mnt/secrets/juror/pnckeystore-64
+                  keystore-password: ${PNCSTORE_PASSWORD}
+                  key-password: ${PNCSTORE_PASSWORD}
                 proxy:
                   scheme: http
                   host: 10.24.1.253

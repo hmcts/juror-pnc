@@ -39,7 +39,7 @@ uk:
                 gatewayId: ${PNC_SERVICE_GATEWAY_ID}
                 requestLocation: ${PNC_SERVICE_REQUEST_LOCATION}
                 namespace: http://www.npia.police.uk/juror/schema/v1
-                scheme: http
+                scheme: https
                 host: ${PNC_SERVICE_HOST}
                 port: ${PNC_SERVICE_POST}
                 url: /WebServiceTestStub/WebServiceTest
@@ -47,8 +47,21 @@ uk:
                 password: ${PNC_SERVICE_PASSWORD}
                 request-method: getPersonDetails
                 response-method: getPersonDetailsResponse
+                ssl:
+                  enable: true
+                  base64-encoded: true
+                  trust-store-location: /mnt/secrets/juror/pnctrusted
+                  trust-store-password: ${PNCSTORE_PASSWORD}
+                  key-store-location: /mnt/secrets/juror/pnckeystore
+                  key-store-password: ${PNCSTORE_PASSWORD}
+                  key-password: ${PNCSTORE_PASSWORD}
+                proxy:
+                  enable: true
+                  scheme: http
+                  host: 10.24.1.253
+                  port: 8080
               juror-service:
-                scheme: http
+                scheme: https
                 host: ${JUROR_SERVICE_HOST}
                 port: ${JUROR_SERVICE_PORT}
                 url: /api/v1/moj/juror-record/pnc/{jurorNumber}

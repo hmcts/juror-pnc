@@ -49,10 +49,11 @@ uk:
                 response-method: getPersonDetailsResponse
                 ssl:
                   enable: true
-                  truststore-location: /mnt/secrets/juror/pnctrusted
-                  truststore-password: ${PNCSTORE_PASSWORD}
-                  keystore-location: /mnt/secrets/juror/pnckeystore
-                  keystore-password: ${PNCSTORE_PASSWORD}
+                  base64-encoded: true
+                  trust-store-location: /mnt/secrets/juror/pnctrusted
+                  trust-store-password: ${PNCSTORE_PASSWORD}
+                  key-store-location: /mnt/secrets/juror/pnckeystore
+                  key-store-password: ${PNCSTORE_PASSWORD}
                   key-password: ${PNCSTORE_PASSWORD}
                 proxy:
                   enable: true

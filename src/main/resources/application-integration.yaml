@@ -49,7 +49,9 @@ uk:
                 request-method: getPersonDetails
                 response-method: getPersonDetailsResponse
                 ssl:
+                  enable: false
                 proxy:
+                  enable: false
         security:
           secret: ${SECRET:WW91clZlcnlWZXJ5VmVyeVNlY3JldEtleVRoYXRJc1NvU2VjcmV0SURvbnRFdmVuS25vd0l0}
 logging:

@@ -9,11 +9,12 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import static io.restassured.RestAssured.given;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@Disabled("Template test not required")
+@ActiveProfiles("integration")
 class SampleFunctionalTest {
     protected static final String CONTENT_TYPE_VALUE = "application/json";
 

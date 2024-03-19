@@ -90,7 +90,7 @@ uk:
                   claims:
                     permissions:
                       - job::update::pnc
-                scheme: http
+                scheme: https
                 host: ${JOB_EXECUTION_SERVICE_HOST}
                 port: ${JOB_EXECUTION_SERVICE_PORT}
                 url: /job/{jobKey}/{taskId}/update/pnc

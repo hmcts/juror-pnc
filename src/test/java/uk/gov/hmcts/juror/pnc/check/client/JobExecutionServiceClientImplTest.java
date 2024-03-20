@@ -35,18 +35,26 @@ class JobExecutionServiceClientImplTest {
 
     private JobExecutionServiceClientImpl jobExecutionServiceClient;
 
+    private static final String SCHEME = "https";
+    private static final String HOST = "localhost";
+    private static final String PORT = "8080";
+    private static final String URL_PREFIX = SCHEME + "://" + HOST + ":" + PORT;
+    private static final String URL_SUFFIX = "/job/{jobKey}/{taskId}/update/pnc";
+
+    private static final String URL = URL_PREFIX + URL_SUFFIX;
 
     @BeforeEach
     void beforeEach() {
         when(restTemplateBuilder.build()).thenReturn(restTemplate);
-        jobExecutionServiceClient = new JobExecutionServiceClientImpl(restTemplateBuilder, TestConstants.URL);
+        jobExecutionServiceClient = new JobExecutionServiceClientImpl(restTemplateBuilder,
+            SCHEME,HOST,PORT, URL_SUFFIX);
     }
 
     @Test
     void positiveValidResponse() {
         JobExecutionServiceClient.StatusUpdatePayload payload = new JobExecutionServiceClient.StatusUpdatePayload(
             JobExecutionServiceClient.StatusUpdatePayload.Status.SUCCESS, "Message",null);
-        when(restTemplate.exchange(eq(TestConstants.URL), eq(HttpMethod.PUT), any(), eq(Void.class),
+        when(restTemplate.exchange(eq(URL), eq(HttpMethod.PUT), any(), eq(Void.class),
             eq(TestConstants.JOB_KEY), eq(TestConstants.TASK_ID)))
             .thenReturn(response);
         when(response.getStatusCode()).thenReturn(HttpStatus.ACCEPTED);
@@ -60,7 +68,7 @@ class JobExecutionServiceClientImplTest {
     void positiveInvalidResponse() {
         JobExecutionServiceClient.StatusUpdatePayload payload = new JobExecutionServiceClient.StatusUpdatePayload(
             JobExecutionServiceClient.StatusUpdatePayload.Status.SUCCESS, "Message",null);
-        when(restTemplate.exchange(eq(TestConstants.URL), eq(HttpMethod.PUT), any(), eq(Void.class),
+        when(restTemplate.exchange(eq(URL), eq(HttpMethod.PUT), any(), eq(Void.class),
             eq(TestConstants.JOB_KEY), eq(TestConstants.TASK_ID)))
             .thenReturn(response);
         when(response.getStatusCode()).thenReturn(HttpStatus.NOT_FOUND);

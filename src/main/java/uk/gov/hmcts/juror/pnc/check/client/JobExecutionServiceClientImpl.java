@@ -24,10 +24,13 @@ public class JobExecutionServiceClientImpl extends AbstractRemoteRestClient impl
     @Autowired
     public JobExecutionServiceClientImpl(
         @ClientType("JobExecutionService") RestTemplateBuilder restTemplateBuilder,
+        @Value("${uk.gov.hmcts.juror.pnc.check.remote.job-execution-service.scheme}") String scheme,
+        @Value("${uk.gov.hmcts.juror.pnc.check.remote.job-execution-service.host}") String host,
+        @Value("${uk.gov.hmcts.juror.pnc.check.remote.job-execution-service.port}") String port,
         @Value("${uk.gov.hmcts.juror.pnc.check.remote.job-execution-service.url}") String url) {
-
         super(restTemplateBuilder);
-        this.url = url;
+        String urlPrefix = scheme + "://" + host + ":" + port;
+        this.url = urlPrefix + url;
     }
 
     @Override

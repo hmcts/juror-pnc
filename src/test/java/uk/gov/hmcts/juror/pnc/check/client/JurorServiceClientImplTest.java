@@ -36,11 +36,19 @@ class JurorServiceClientImplTest {
 
     private JurorServiceClientImpl jurorServiceClient;
 
+    private static final String SCHEME = "https";
+    private static final String HOST = "localhost";
+    private static final String PORT = "8080";
+    private static final String URL_PREFIX = SCHEME + "://" + HOST + ":" + PORT;
+    private static final String URL_SUFFIX = "/api/v1/moj/juror-record/pnc/{jurorNumber}";
+
+    private static final String URL = URL_PREFIX + URL_SUFFIX;
 
     @BeforeEach
     void beforeEach() {
         when(restTemplateBuilder.build()).thenReturn(restTemplate);
-        jurorServiceClient = new JurorServiceClientImpl(restTemplateBuilder, TestConstants.URL);
+        jurorServiceClient = new JurorServiceClientImpl(restTemplateBuilder,
+            SCHEME, HOST, PORT, URL_SUFFIX);
     }
 
     @Test
@@ -48,7 +56,7 @@ class JurorServiceClientImplTest {
         JurorServiceClient.Payload payload = new JurorServiceClient.Payload(
             PoliceNationalComputerCheckResult.Status.ELIGIBLE);
 
-        when(restTemplate.exchange(eq(TestConstants.URL), eq(HttpMethod.PATCH), any(), eq(Void.class),
+        when(restTemplate.exchange(eq(URL), eq(HttpMethod.PATCH), any(), eq(Void.class),
             eq(TestConstants.JUROR_NUMBER)))
             .thenReturn(response);
         when(response.getStatusCode()).thenReturn(HttpStatus.ACCEPTED);
@@ -62,7 +70,7 @@ class JurorServiceClientImplTest {
     void positiveInvalidResponse() {
         JurorServiceClient.Payload payload = new JurorServiceClient.Payload(
             PoliceNationalComputerCheckResult.Status.ELIGIBLE);
-        when(restTemplate.exchange(eq(TestConstants.URL), eq(HttpMethod.PATCH), any(), eq(Void.class),
+        when(restTemplate.exchange(eq(URL), eq(HttpMethod.PATCH), any(), eq(Void.class),
             eq(TestConstants.JUROR_NUMBER)))
             .thenReturn(response);
         when(response.getStatusCode()).thenReturn(HttpStatus.NOT_FOUND);

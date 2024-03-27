@@ -42,7 +42,7 @@ uk:
                 scheme: https
                 host: ${PNC_SERVICE_HOST}
                 port: ${PNC_SERVICE_POST}
-                url: /juror/
+                url: /juror
                 username: ${PNC_SERVICE_USERNAME}
                 password: ${PNC_SERVICE_PASSWORD}
                 request-method: getPersonDetails
@@ -60,6 +60,7 @@ uk:
                   scheme: http
                   host: 10.24.1.253
                   port: 8080
+                soap-action: https://${PNC_SERVICE_HOST}:${PNC_SERVICE_POST}/juror
               juror-service:
                 scheme: https
                 host: ${JUROR_SERVICE_HOST}

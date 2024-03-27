@@ -42,7 +42,7 @@ uk:
                 scheme: https
                 host: ${PNC_SERVICE_HOST}
                 port: ${PNC_SERVICE_POST}
-                url: /WebServiceTestStub/WebServiceTest
+                url: /juror
                 username: ${PNC_SERVICE_USERNAME}
                 password: ${PNC_SERVICE_PASSWORD}
                 request-method: getPersonDetails

@@ -43,7 +43,7 @@ class GetPersonDetailsMapperTest {
         policeNationalComputerConfig.setPncUserId("myPncUserId");
         policeNationalComputerConfig.setPncMode(PncModeType.DEMO);
         policeNationalComputerConfig.setPncAuthorisation("myPncAuthorisation");
-        policeNationalComputerConfig.setPncTranCode(PncTranCodeType.LO);
+        policeNationalComputerConfig.setPncTranCode(PncTranCodeType.L_0);
         policeNationalComputerConfig.setOriginator("myOriginator");
         policeNationalComputerConfig.setReasonCode(1);
         policeNationalComputerConfig.setGatewayId("myGatewayId");

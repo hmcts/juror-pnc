@@ -84,7 +84,7 @@
             <PNC_AI:enumeration value="@NP"/>
             <PNC_AI:enumeration value="@DS"/>
             <PNC_AI:enumeration value="@DE"/>
-            <PNC_AI:enumeration value="#LO"/>
+            <PNC_AI:enumeration value="#L0"/>
         </PNC_AI:restriction>
     </PNC_AI:simpleType>
     <PNC_AI:simpleType name="Originator_Type">

@@ -34,7 +34,7 @@ uk:
                 pncUserId: pncUserId
                 pncMode: trng
                 pncAuthorisation: pncAuthorisation
-                pncTranCode: L0
+                pncTranCode: L_0
                 originator: originator
                 reasonCode: 6
                 gatewayId: gatewayId

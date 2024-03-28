@@ -38,7 +38,7 @@ withPipeline(type, product, component) {
   enableSlackNotifications('#juror-build-notices')
   syncBranchesWithMaster(branchesToSync)
 
-  env.PNC_SERVICE_PNC_TRAN_CODE = 'L0'
+  env.PNC_SERVICE_PNC_TRAN_CODE = 'L_0'
   env.PNC_SERVICE_REASON_CODE = 6
   env.PNC_SERVICE_PNC_TERMINAL = '2LCRTS001'
   env.PNC_SERVICE_PNC_USERID = '2KCRTS01'

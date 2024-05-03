@@ -205,7 +205,7 @@ uk:
                   conditions:
                     - disposal-must-not-end-with-in:
                         years: 10
-            max-retry-count: 3
+            max-retry-count: 0
             retry-delay-ms: 1000
             pnc-check-parallelism: 1
         security:

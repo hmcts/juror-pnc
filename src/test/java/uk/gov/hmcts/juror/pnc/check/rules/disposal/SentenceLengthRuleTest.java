@@ -40,7 +40,10 @@ class SentenceLengthRuleTest extends AbstractDisposalRuleTest<SentenceLengthRule
                 DisposalDto.builder().disposalCode("1").sentenceAmount(null).sentencePeriod("Y").build(),
                 (supportedCodes, failOnPass) -> createRule(supportedCodes, failOnPass, Comparator.EQUAL_TO, 0)),
             disposalArgument("Combined Sentence Period 'Y100'",
-                DisposalDto.builder().disposalCode("1").sentencePeriod("Y100").build())
+                DisposalDto.builder().disposalCode("1").sentencePeriod("Y100").build()),
+            disposalArgument("Typical - Not equal to",
+                DisposalDto.builder().disposalCode("1").sentenceAmount("100").sentencePeriod("Y").build(),
+                (supportedCodes, failOnPass) -> createRule(supportedCodes, failOnPass, Comparator.NOT_EQUAL_TO, 99))
         );
     }
 
@@ -50,7 +53,10 @@ class SentenceLengthRuleTest extends AbstractDisposalRuleTest<SentenceLengthRule
             disposalArgument("Incorrect sentence amount",
                 DisposalDto.builder().disposalCode("1").sentenceAmount("101").sentencePeriod("Y").build()),
             disposalArgument("Incorrect sentence amount - From sentence Period",
-                DisposalDto.builder().disposalCode("1").sentencePeriod("Y101").build())
+                DisposalDto.builder().disposalCode("1").sentencePeriod("Y101").build()),
+            disposalArgument("Typical - Not equal to",
+                DisposalDto.builder().disposalCode("1").sentenceAmount("100").sentencePeriod("Y").build(),
+                (supportedCodes, failOnPass) -> createRule(supportedCodes, failOnPass, Comparator.NOT_EQUAL_TO, 100))
         );
     }
 
@@ -58,6 +64,9 @@ class SentenceLengthRuleTest extends AbstractDisposalRuleTest<SentenceLengthRule
     void positiveGetDescriptionTest() {
         assertEquals("Sentence date must be EQUAL_TO 1",
             createRule(null, false, Comparator.EQUAL_TO, 1).getDescription(),
+            "Description must match");
+        assertEquals("Sentence date must be NOT_EQUAL_TO 1",
+            createRule(null, false, Comparator.NOT_EQUAL_TO, 1).getDescription(),
             "Description must match");
         assertEquals("Sentence date must be GREATER_THAN_OR_EQUAL_TO 4",
             createRule(null, false, Comparator.GREATER_THAN_OR_EQUAL_TO, 4).getDescription(),

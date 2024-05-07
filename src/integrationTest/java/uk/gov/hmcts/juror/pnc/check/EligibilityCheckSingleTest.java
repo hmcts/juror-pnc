@@ -255,9 +255,33 @@ class EligibilityCheckSingleTest extends IntegrationTest {
                         .disposalCode(disposalCode)
                         .sentenceAmount("999")
                         .sentencePeriod("Y")
-                        .build())
+                        .build()
+                        .disposalEffectiveDate(LocalDate.now(clock).minusYears(20)))
                 )),
             PoliceNationalComputerCheckResult.Status.INELIGIBLE
+        );
+    }
+
+    //Condition 1
+    @ParameterizedTest(name = "ELIGIBLE: Sentenced to life (imprisonment, detention and custody for life) and "
+        + "sentence amount is 12 months. Disposal code {0}")
+    @ValueSource(strings = {
+        "1002", "1006", "1007", "1022", "1024", "1092"
+    })
+    void sentenceToLifeSentenceAmount12Months(String disposalCode) throws Exception {
+        JurorCheckRequest jurorCheckRequest = getTypicalJurorCheckRequest();
+        performValidSingle(
+            jurorCheckRequest,
+            createGetPersonDetailsResponse(jurorCheckRequest,
+                "", false, List.of(
+                    createDisposal(DisposalDto.builder()
+                        .disposalCode(disposalCode)
+                        .sentenceAmount("12")
+                        .sentencePeriod("M")
+                        .build()
+                        .disposalEffectiveDate(LocalDate.now(clock).minusYears(20)))
+                )),
+            PoliceNationalComputerCheckResult.Status.ELIGIBLE
         );
     }
 
@@ -278,9 +302,58 @@ class EligibilityCheckSingleTest extends IntegrationTest {
                         .disposalCode(disposalCode)
                         .sentenceAmount("5")
                         .sentencePeriod("Y")
-                        .build())
+                        .build()
+                        .disposalEffectiveDate(LocalDate.now(clock).minusYears(20)))
                 )),
             PoliceNationalComputerCheckResult.Status.INELIGIBLE
+        );
+    }
+
+    //Condition 2
+    @ParameterizedTest(name = "ELIGIBLE: Sentenced to 5 years or more, sentence amount is 5 years or more."
+        + "Sentence Length 4 years. Disposal code {0}.")
+    @ValueSource(strings = {
+        "1002", "1006", "1007", "1022", "1024", "1092"
+    })
+    void sentenceTo5OrMoreYears4(String disposalCode) throws Exception {
+        JurorCheckRequest jurorCheckRequest = getTypicalJurorCheckRequest();
+        performValidSingle(
+            jurorCheckRequest,
+            createGetPersonDetailsResponse(jurorCheckRequest,
+                "", false, List.of(
+
+                    createDisposal(DisposalDto.builder()
+                        .disposalCode(disposalCode)
+                        .sentenceAmount("4")
+                        .sentencePeriod("Y")
+                        .build()
+                        .disposalEffectiveDate(LocalDate.now(clock).minusYears(20)))
+                )),
+            PoliceNationalComputerCheckResult.Status.ELIGIBLE
+        );
+    }
+
+    //Condition 2
+    @ParameterizedTest(name = "ELIGIBLE: Sentenced to 5 years or more, sentence amount is 5 years or more."
+        + "Sentence Length 12 months. Disposal code {0}.")
+    @ValueSource(strings = {
+        "1002", "1006", "1007", "1022", "1024", "1092"
+    })
+    void sentenceTo5OrMoreYears12Months(String disposalCode) throws Exception {
+        JurorCheckRequest jurorCheckRequest = getTypicalJurorCheckRequest();
+        performValidSingle(
+            jurorCheckRequest,
+            createGetPersonDetailsResponse(jurorCheckRequest,
+                "", false, List.of(
+
+                    createDisposal(DisposalDto.builder()
+                        .disposalCode(disposalCode)
+                        .sentenceAmount("12")
+                        .sentencePeriod("M")
+                        .build()
+                        .disposalEffectiveDate(LocalDate.now(clock).minusYears(20)))
+                )),
+            PoliceNationalComputerCheckResult.Status.ELIGIBLE
         );
     }
 

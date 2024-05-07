@@ -81,10 +81,15 @@ public class RuleServiceImpl implements RuleService {
         for (RuleConfig.ConditionalRule.Condition condition : conditionalRule.getConditions()) {
             int rulesAdded = 0;
             if (condition.getSentenceLength() != null) {
-                Map.Entry<Comparator, Integer> sentenceLength =
-                    condition.getSentenceLength().entrySet().stream().findFirst().orElseThrow();
+                Map.Entry<Comparator, Map<DateUnit, Integer>> sentenceLength =
+                    condition.getSentenceLength().entrySet()
+                        .stream().findFirst().orElseThrow();
+
+                Map.Entry<DateUnit, Integer> dateUnit =
+                    sentenceLength.getValue().entrySet().stream().findFirst().orElseThrow();
+
                 disposalAndRule.addRule(new SentenceLengthRule(conditionalRule.getWhenCodeIsOneOf(),
-                    condition.isFailOnPass(), sentenceLength.getKey(), sentenceLength.getValue()));
+                    condition.isFailOnPass(), sentenceLength.getKey(), dateUnit.getKey(), dateUnit.getValue()));
                 rulesAdded++;
             }
             if (condition.getDisposalMustNotEndWithIn() != null) {

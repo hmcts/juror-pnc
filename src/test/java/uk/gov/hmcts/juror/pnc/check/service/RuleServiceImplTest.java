@@ -282,7 +282,7 @@ class RuleServiceImplTest {
         void singleSentenceLengthRule(boolean failOnPass) {
             RuleConfig.ConditionalRule.Condition condition =
                 RuleConfig.ConditionalRule.Condition.builder()
-                    .sentenceLength(Map.of(Comparator.GREATER_THAN, 1))
+                    .sentenceLength(Map.of(Comparator.GREATER_THAN, Map.of(DateUnit.YEARS, 1)))
                     .failOnPass(failOnPass)
                     .build();
             Rule<?> rule = triggerWithCondition(condition);
@@ -344,7 +344,7 @@ class RuleServiceImplTest {
         void multipleRules() {
             RuleConfig.ConditionalRule.Condition condition =
                 RuleConfig.ConditionalRule.Condition.builder()
-                    .sentenceLength(Map.of(Comparator.LESS_THAN, 4))
+                    .sentenceLength(Map.of(Comparator.LESS_THAN, Map.of (DateUnit.YEARS,4)))
                     .disposalMustNotEndWithIn(Map.of(DateUnit.YEARS, 5))
                     .qualLiteralCheck(new RuleConfig.ConditionalRule.Condition.QualLiteralCheck("H"))
                     .failOnPass(false)
@@ -375,7 +375,7 @@ class RuleServiceImplTest {
         void multipleConditions() {
             RuleConfig.ConditionalRule.Condition sentenceLengthCondition =
                 RuleConfig.ConditionalRule.Condition.builder()
-                    .sentenceLength(Map.of(Comparator.LESS_THAN, 4))
+                    .sentenceLength(Map.of(Comparator.LESS_THAN, Map.of (DateUnit.YEARS,4)))
                     .failOnPass(false)
                     .build();
 
@@ -410,7 +410,6 @@ class RuleServiceImplTest {
             validateQualLiteralCheckRule(andRule.getRules().get(2), qualLiteralCheckCondition,
                 "H");
         }
-
 
 
         private Rule<?> triggerWithCondition(RuleConfig.ConditionalRule.Condition condition) {

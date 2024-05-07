@@ -1,18 +1,24 @@
 package uk.gov.hmcts.juror.pnc.check.rules;
 
+import lombok.Getter;
+
 import java.util.Calendar;
 
 public enum DateUnit {
-    //If more date units are added SentenceLength Rule will need to be updated to account for new lengths
-    YEARS(Calendar.YEAR);
+    //Days are always the maximum value
+    YEARS(Calendar.YEAR, 366),
+    MONTHS(Calendar.MONTH, 31),
+    DAYS(Calendar.DAY_OF_MONTH, 1);
 
+    @Getter
     private final int field;
+    private final int days;
 
-    DateUnit(int field) {
+    DateUnit(int field, int days) {
         this.field = field;
+        this.days = days;
     }
-
-    public int getField() {
-        return this.field;
+    public long toDays(long disposalDuration) {
+        return disposalDuration * this.days;
     }
 }

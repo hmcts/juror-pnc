@@ -39,7 +39,7 @@ public class RuleConfig {
             private boolean failOnPass;
 
             @Size(max = 1)
-            private Map<Comparator, Integer> sentenceLength;
+            private Map<Comparator, @Size(max = 1) Map<DateUnit, Integer>> sentenceLength;
 
             @Size(max = 1)
             private Map<DateUnit, Integer> disposalMustNotEndWithIn;

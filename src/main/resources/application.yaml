@@ -123,7 +123,8 @@ uk:
                     - 1092
                   conditions:
                     - sentence-length:
-                        equal-to: 999
+                        equal-to:
+                          years: 999
                       fail-on-pass: true
                 - description: Sentenced to 5 years or more, sentence amount is 5 years or more
                   when-code-is-one-of:
@@ -135,7 +136,8 @@ uk:
                     - 1092
                   conditions:
                     - sentence-length:
-                        greater-than-or-equal-to: 5
+                        greater-than-or-equal-to:
+                          years: 5
                       fail-on-pass: true
                 - description: Sentence of imprisonment or detention in last 10 Years and sentence ended in last 10 years
                   when-code-is-one-of:

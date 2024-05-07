@@ -263,7 +263,7 @@ class EligibilityCheckSingleTest extends IntegrationTest {
     }
 
     //Condition 1
-    @ParameterizedTest(name = "ELIGIBLE: Sentenced to life (imprisonment, detention and custody for life) and "
+    @ParameterizedTest(name = "ELIGIBLE: Sentenced to life (imprisonment, detention and custody for life) but "
         + "sentence amount is 12 months. Disposal code {0}")
     @ValueSource(strings = {
         "1002", "1006", "1007", "1022", "1024", "1092"

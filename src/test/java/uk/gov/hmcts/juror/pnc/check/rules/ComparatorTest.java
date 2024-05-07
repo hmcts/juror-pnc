@@ -14,6 +14,7 @@ class ComparatorTest {
     public static Stream<Arguments> comparatorArguments() {
         return Stream.of(
             arguments(Comparator.EQUAL_TO, new ComparatorRules(false, false, true)),
+            arguments(Comparator.NOT_EQUAL_TO, new ComparatorRules(true, true, false)),
             arguments(Comparator.GREATER_THAN, new ComparatorRules(false, true, false)),
             arguments(Comparator.LESS_THAN, new ComparatorRules(true, false, false)),
             arguments(Comparator.GREATER_THAN_OR_EQUAL_TO, new ComparatorRules(false, true, true)),

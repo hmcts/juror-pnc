@@ -18,6 +18,7 @@ public enum DateUnit {
         this.field = field;
         this.days = days;
     }
+
     public long toDays(long disposalDuration) {
         return disposalDuration * this.days;
     }

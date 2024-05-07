@@ -31,18 +31,11 @@ public class SentenceLengthRule extends DisposalRule {
     @Override
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     protected boolean execute(DisposalDto disposal) {
-        String disposalDurationStr = Strings.isNotBlank(disposal.getSentenceAmount())
-            ? disposal.getSentenceAmount()
-            : "0";
         String period = Strings.isNotBlank(disposal.getSentencePeriod())
             ? disposal.getSentencePeriod()
             : "Y";
 
         final String periodCode = period.substring(0, 1);
-        if (period.length() != 1) {
-            disposalDurationStr = period.substring(1);
-        }
-        long disposalDuration = Long.parseLong(disposalDurationStr);
         DateUnit disposalDateUnit;
         if ("Y".equalsIgnoreCase(periodCode)) {
             disposalDateUnit = DateUnit.YEARS;
@@ -53,6 +46,13 @@ public class SentenceLengthRule extends DisposalRule {
         } else {
             return true;
         }
+        String disposalDurationStr = Strings.isNotBlank(disposal.getSentenceAmount())
+            ? disposal.getSentenceAmount()
+            : "0";
+        if (period.length() != 1) {
+            disposalDurationStr = period.substring(1);
+        }
+        long disposalDuration = Long.parseLong(disposalDurationStr);
         return comparator.compare(disposalDateUnit.toDays(disposalDuration), days);
     }
 

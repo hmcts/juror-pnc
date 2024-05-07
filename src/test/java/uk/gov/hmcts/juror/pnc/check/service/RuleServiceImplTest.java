@@ -344,7 +344,7 @@ class RuleServiceImplTest {
         void multipleRules() {
             RuleConfig.ConditionalRule.Condition condition =
                 RuleConfig.ConditionalRule.Condition.builder()
-                    .sentenceLength(Map.of(Comparator.LESS_THAN, Map.of (DateUnit.YEARS,4)))
+                    .sentenceLength(Map.of(Comparator.LESS_THAN, Map.of(DateUnit.YEARS, 4)))
                     .disposalMustNotEndWithIn(Map.of(DateUnit.YEARS, 5))
                     .qualLiteralCheck(new RuleConfig.ConditionalRule.Condition.QualLiteralCheck("H"))
                     .failOnPass(false)
@@ -375,7 +375,7 @@ class RuleServiceImplTest {
         void multipleConditions() {
             RuleConfig.ConditionalRule.Condition sentenceLengthCondition =
                 RuleConfig.ConditionalRule.Condition.builder()
-                    .sentenceLength(Map.of(Comparator.LESS_THAN, Map.of (DateUnit.YEARS,4)))
+                    .sentenceLength(Map.of(Comparator.LESS_THAN, Map.of(DateUnit.YEARS, 4)))
                     .failOnPass(false)
                     .build();
 

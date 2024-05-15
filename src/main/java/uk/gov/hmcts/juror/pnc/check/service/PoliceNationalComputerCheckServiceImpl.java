@@ -91,8 +91,12 @@ public class PoliceNationalComputerCheckServiceImpl implements PoliceNationalCom
         log.trace("Attempting to save result: " + result + " for juror " + jurorCheckDetails.getJurorNumber());
         if (result != null) {
             try {
-                this.jurorServiceClient.call(jurorCheckDetails.getJurorNumber(),
-                    new JurorServiceClient.Payload(result.getStatus()));
+                JurorServiceClient.PoliceCheckStatusDto policeCheckStatusDto =
+                    this.jurorServiceClient.call(jurorCheckDetails.getJurorNumber(),
+                        new JurorServiceClient.PoliceCheckStatusDto(result.getStatus()));
+
+                result.setMaxRetiresExceed(policeCheckStatusDto.getStatus()
+                    .equals(PoliceNationalComputerCheckResult.Status.UNCHECKED_MAX_RETRIES_EXCEEDED));
                 log.info("Juror check result saved for juror: " + jurorCheckDetails.getJurorNumber());
             } catch (RemoteGatewayException exception) {
                 result.setStatus(PoliceNationalComputerCheckResult.Status.ERROR_RETRY_FAILED_TO_UPDATE_BACKEND);
@@ -134,11 +138,20 @@ public class PoliceNationalComputerCheckServiceImpl implements PoliceNationalCom
             }
         }
 
+
+        metaDataMap.put("TOTAL_CHECKS_IN_BATCH", String.valueOf(jurorCheckBatch.getJurorCheckDetails().size()));
+        metaDataMap.put("TOTAL_NULL_RESULTS", String.valueOf(totalNullResults));
+
+        metaDataMap.put("TOTAL_WITH_STATUS_" + PoliceNationalComputerCheckResult.Status.UNCHECKED_MAX_RETRIES_EXCEEDED,
+            String.valueOf(jurorCheckBatch.getJurorCheckDetails().stream()
+                .filter(details -> details.getResult() != null)
+                .filter(details -> details.getResult().isMaxRetiresExceed())
+                .count()));
+
         Map<PoliceNationalComputerCheckResult.Status, Long> countMap = jurorCheckBatch.getJurorCheckDetails().stream()
             .filter(details -> details.getResult() != null)
             .collect(Collectors.groupingBy(o -> o.getResult().getStatus(), Collectors.counting()));
-        metaDataMap.put("TOTAL_CHECKS_IN_BATCH", String.valueOf(jurorCheckBatch.getJurorCheckDetails().size()));
-        metaDataMap.put("TOTAL_NULL_RESULTS", String.valueOf(totalNullResults));
+
         for (PoliceNationalComputerCheckResult.Status resultStatus :
             PoliceNationalComputerCheckResult.Status.values()) {
             long count = countMap.getOrDefault(resultStatus, 0L);

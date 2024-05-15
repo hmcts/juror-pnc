@@ -34,15 +34,16 @@ public class JurorServiceClientImpl extends AbstractRemoteRestClient implements 
     }
 
     @Override
-    public void call(String jurorNumber, Payload payload) {
+    public PoliceCheckStatusDto call(String jurorNumber, PoliceCheckStatusDto payload) {
         log.debug("Updating juror: " + jurorNumber + " pnc check result on juror service backend");
-        HttpEntity<Payload> requestUpdate = new HttpEntity<>(payload);
-        ResponseEntity<Void> response =
-            restTemplate.exchange(url, HttpMethod.PATCH, requestUpdate, Void.class, jurorNumber);
+        HttpEntity<PoliceCheckStatusDto> requestUpdate = new HttpEntity<>(payload);
+        ResponseEntity<PoliceCheckStatusDto> response =
+            restTemplate.exchange(url, HttpMethod.PATCH, requestUpdate, PoliceCheckStatusDto.class, jurorNumber);
         final HttpStatusCode statusCode = response.getStatusCode();
         if (!statusCode.equals(HttpStatus.ACCEPTED)) {
             throw new RemoteGatewayException("Call to JurorServiceClient failed status code was: " + statusCode);
         }
         log.debug("Successfully updating juror: " + jurorNumber + " pnc check result on juror service backend");
+        return response.getBody();
     }
 }

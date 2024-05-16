@@ -6,6 +6,7 @@ import lombok.Data;
 public class PoliceNationalComputerCheckResult {
     private Status status;
     private String message;
+    private boolean isMaxRetiresExceed;
 
     public PoliceNationalComputerCheckResult(Status status, String message) {
         this.status = status;
@@ -33,6 +34,7 @@ public class PoliceNationalComputerCheckResult {
         ERROR_RETRY_OTHER_ERROR_CODE,
         ERROR_RETRY_NO_ERROR_REASON,
         ERROR_RETRY_UNEXPECTED_EXCEPTION,
-        ERROR_RETRY_FAILED_TO_UPDATE_BACKEND;
+        ERROR_RETRY_FAILED_TO_UPDATE_BACKEND,
+        UNCHECKED_MAX_RETRIES_EXCEEDED;
     }
 }

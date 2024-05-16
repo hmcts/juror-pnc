@@ -35,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -75,6 +76,8 @@ class PoliceNationalComputerCheckServiceImplTest {
             getPersonDetailsMapper,
             ruleService
         ));
+        when(this.jurorServiceClient.call(any(), any())).thenReturn(new JurorServiceClient.PoliceCheckStatusDto(
+            PoliceNationalComputerCheckResult.Status.ELIGIBLE));
     }
 
 
@@ -647,7 +650,8 @@ class PoliceNationalComputerCheckServiceImplTest {
 
             verify(jurorServiceClient, times(1)).call(
                 jurorCheckDetails.getJurorNumber(),
-                new JurorServiceClient.Payload(PoliceNationalComputerCheckResult.Status.ERROR_RETRY_NAME_HAS_NUMERICS)
+                new JurorServiceClient.PoliceCheckStatusDto(
+                    PoliceNationalComputerCheckResult.Status.ERROR_RETRY_NAME_HAS_NUMERICS)
             );
         }
 
@@ -676,7 +680,7 @@ class PoliceNationalComputerCheckServiceImplTest {
 
             verify(jurorServiceClient, times(1)).call(
                 jurorCheckDetails.getJurorNumber(),
-                new JurorServiceClient.Payload(
+                new JurorServiceClient.PoliceCheckStatusDto(
                     PoliceNationalComputerCheckResult.Status.ERROR_RETRY_UNEXPECTED_EXCEPTION)
             );
         }
@@ -706,7 +710,8 @@ class PoliceNationalComputerCheckServiceImplTest {
 
             verify(jurorServiceClient, times(1)).call(
                 jurorCheckDetails.getJurorNumber(),
-                new JurorServiceClient.Payload(PoliceNationalComputerCheckResult.Status.ERROR_RETRY_CONNECTION_ERROR)
+                new JurorServiceClient.PoliceCheckStatusDto(
+                    PoliceNationalComputerCheckResult.Status.ERROR_RETRY_CONNECTION_ERROR)
             );
         }
 
@@ -739,7 +744,7 @@ class PoliceNationalComputerCheckServiceImplTest {
 
             verify(jurorServiceClient, times(1)).call(
                 jurorCheckDetails.getJurorNumber(),
-                new JurorServiceClient.Payload(PoliceNationalComputerCheckResult.Status.ELIGIBLE)
+                new JurorServiceClient.PoliceCheckStatusDto(PoliceNationalComputerCheckResult.Status.ELIGIBLE)
             );
         }
     }

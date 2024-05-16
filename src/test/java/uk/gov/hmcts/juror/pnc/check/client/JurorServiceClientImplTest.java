@@ -32,7 +32,7 @@ class JurorServiceClientImplTest {
     @MockBean
     private RestTemplate restTemplate;
     @MockBean
-    private ResponseEntity<Void> response;
+    private ResponseEntity<JurorServiceClient.PoliceCheckStatusDto> response;
 
     private JurorServiceClientImpl jurorServiceClient;
 
@@ -53,10 +53,11 @@ class JurorServiceClientImplTest {
 
     @Test
     void positiveValidResponse() {
-        JurorServiceClient.Payload payload = new JurorServiceClient.Payload(
+        JurorServiceClient.PoliceCheckStatusDto payload = new JurorServiceClient.PoliceCheckStatusDto(
             PoliceNationalComputerCheckResult.Status.ELIGIBLE);
 
-        when(restTemplate.exchange(eq(URL), eq(HttpMethod.PATCH), any(), eq(Void.class),
+        when(restTemplate.exchange(eq(URL), eq(HttpMethod.PATCH), any(),
+            eq(JurorServiceClient.PoliceCheckStatusDto.class),
             eq(TestConstants.JUROR_NUMBER)))
             .thenReturn(response);
         when(response.getStatusCode()).thenReturn(HttpStatus.ACCEPTED);
@@ -68,9 +69,11 @@ class JurorServiceClientImplTest {
 
     @Test
     void positiveInvalidResponse() {
-        JurorServiceClient.Payload payload = new JurorServiceClient.Payload(
+        JurorServiceClient.PoliceCheckStatusDto payload = new JurorServiceClient.PoliceCheckStatusDto(
             PoliceNationalComputerCheckResult.Status.ELIGIBLE);
-        when(restTemplate.exchange(eq(URL), eq(HttpMethod.PATCH), any(), eq(Void.class),
+
+        when(restTemplate.exchange(eq(URL), eq(HttpMethod.PATCH), any(),
+            eq(JurorServiceClient.PoliceCheckStatusDto.class),
             eq(TestConstants.JUROR_NUMBER)))
             .thenReturn(response);
         when(response.getStatusCode()).thenReturn(HttpStatus.NOT_FOUND);

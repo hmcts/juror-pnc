@@ -8,12 +8,13 @@ import uk.gov.hmcts.juror.standard.client.contract.Client;
 
 public interface JurorServiceClient extends Client {
 
-    void call(String jurorNumber, Payload result);
+    PoliceCheckStatusDto call(String jurorNumber, PoliceCheckStatusDto result);
 
     @AllArgsConstructor
     @Getter
     @EqualsAndHashCode
-    class Payload {
+    class PoliceCheckStatusDto {
         private PoliceNationalComputerCheckResult.Status status;
     }
 }
+

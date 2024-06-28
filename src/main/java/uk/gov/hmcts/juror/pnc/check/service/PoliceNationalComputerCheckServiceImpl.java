@@ -55,10 +55,10 @@ public class PoliceNationalComputerCheckServiceImpl implements PoliceNationalCom
     @Override
     public PoliceNationalComputerCheckResult performPoliceCheck(
         final JurorCheckDetails jurorCheckDetails) {
-        log.info("Performing police check for Juror: " + jurorCheckDetails.getJurorNumber());
+        log.info("Performing police check for Juror: {}", jurorCheckDetails.getJurorNumber());
         PoliceNationalComputerCheckResult result = getPoliceCheckResult(jurorCheckDetails);
         savePoliceCheckResult(jurorCheckDetails, result);
-        log.info("Juror check complete for juror: " + jurorCheckDetails.getJurorNumber());
+        log.info("Juror check complete for juror: {}", jurorCheckDetails.getJurorNumber());
         return result;
     }
 
@@ -87,22 +87,21 @@ public class PoliceNationalComputerCheckServiceImpl implements PoliceNationalCom
     }
 
     private void savePoliceCheckResult(JurorCheckDetails jurorCheckDetails, PoliceNationalComputerCheckResult result) {
-        jurorCheckDetails.setResult(result);
-        log.trace("Attempting to save result: " + result + " for juror " + jurorCheckDetails.getJurorNumber());
         if (result != null) {
             try {
                 JurorServiceClient.PoliceCheckStatusDto policeCheckStatusDto =
                     this.jurorServiceClient.call(jurorCheckDetails.getJurorNumber(),
                         new JurorServiceClient.PoliceCheckStatusDto(result.getStatus()));
-
                 result.setMaxRetiresExceed(policeCheckStatusDto.getStatus()
                     .equals(PoliceNationalComputerCheckResult.Status.UNCHECKED_MAX_RETRIES_EXCEEDED));
-                log.info("Juror check result saved for juror: " + jurorCheckDetails.getJurorNumber());
-            } catch (RemoteGatewayException exception) {
+                log.info("Juror check result saved for juror: {}", jurorCheckDetails.getJurorNumber());
+            } catch (Throwable exception) {
                 result.setStatus(PoliceNationalComputerCheckResult.Status.ERROR_RETRY_FAILED_TO_UPDATE_BACKEND);
-                log.error("Failed to save juror result on backend: " + jurorCheckDetails.getJurorNumber(), exception);
+                log.error("Failed to save juror result on backend: {}", jurorCheckDetails.getJurorNumber(), exception);
             }
         }
+        jurorCheckDetails.setResult(result);
+        log.trace("Attempting to save result: {} for juror {}", result, jurorCheckDetails.getJurorNumber());
     }
 
     @Override

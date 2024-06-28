@@ -142,21 +142,24 @@ public class PoliceNationalComputerCheckServiceImpl implements PoliceNationalCom
         metaDataMap.put("TOTAL_CHECKS_IN_BATCH", String.valueOf(jurorCheckBatch.getJurorCheckDetails().size()));
         metaDataMap.put("TOTAL_NULL_RESULTS", String.valueOf(totalNullResults));
 
-        metaDataMap.put("TOTAL_WITH_STATUS_" + PoliceNationalComputerCheckResult.Status.UNCHECKED_MAX_RETRIES_EXCEEDED,
-            String.valueOf(jurorCheckBatch.getJurorCheckDetails().stream()
-                .filter(details -> details.getResult() != null)
-                .filter(details -> details.getResult().isMaxRetiresExceed())
-                .count()));
-
         Map<PoliceNationalComputerCheckResult.Status, Long> countMap = jurorCheckBatch.getJurorCheckDetails().stream()
             .filter(details -> details.getResult() != null)
             .collect(Collectors.groupingBy(o -> o.getResult().getStatus(), Collectors.counting()));
 
         for (PoliceNationalComputerCheckResult.Status resultStatus :
             PoliceNationalComputerCheckResult.Status.values()) {
+            if(resultStatus == PoliceNationalComputerCheckResult.Status.UNCHECKED_MAX_RETRIES_EXCEEDED) {
+                continue;
+            }
             long count = countMap.getOrDefault(resultStatus, 0L);
             metaDataMap.put("TOTAL_WITH_STATUS_" + resultStatus.name(), String.valueOf(count));
         }
+
+        metaDataMap.put("TOTAL_WITH_STATUS_" + PoliceNationalComputerCheckResult.Status.UNCHECKED_MAX_RETRIES_EXCEEDED,
+            String.valueOf(jurorCheckBatch.getJurorCheckDetails().stream()
+                .filter(details -> details.getResult() != null)
+                .filter(details -> details.getResult().isMaxRetiresExceed())
+                .count()));
 
         this.jobExecutionServiceClient.call(
             new JobExecutionServiceClient.StatusUpdatePayload(status, "Juror check completed.", metaDataMap),

@@ -215,7 +215,7 @@ ext {
     log4JVersion = "2.23.1"
     springVersion = "3.3.1"
     springSeceurityVersion = "6.1.4"
-    lombokVersion = "1.18.32"
+    lombokVersion = "1.18.34"
 }
 
 ext['snakeyaml.version'] = '2.0'

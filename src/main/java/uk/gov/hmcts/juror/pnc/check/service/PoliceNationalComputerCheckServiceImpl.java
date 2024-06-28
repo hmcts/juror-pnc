@@ -148,7 +148,7 @@ public class PoliceNationalComputerCheckServiceImpl implements PoliceNationalCom
 
         for (PoliceNationalComputerCheckResult.Status resultStatus :
             PoliceNationalComputerCheckResult.Status.values()) {
-            if(resultStatus == PoliceNationalComputerCheckResult.Status.UNCHECKED_MAX_RETRIES_EXCEEDED) {
+            if (resultStatus == PoliceNationalComputerCheckResult.Status.UNCHECKED_MAX_RETRIES_EXCEEDED) {
                 continue;
             }
             long count = countMap.getOrDefault(resultStatus, 0L);

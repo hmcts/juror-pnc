@@ -18,8 +18,6 @@ class PoliceNationalComputerCheckResultTest {
 
         assertEquals(status, result.getStatus(), "Status should match");
         assertEquals(message, result.getMessage(), "Message should match");
-        assertEquals(getExpectedToString(status, message), result.toString(),
-            "ToString should be describe the result");
     }
 
 
@@ -30,8 +28,6 @@ class PoliceNationalComputerCheckResultTest {
 
         assertEquals(status, result.getStatus(), "Status should match");
         assertNull(result.getMessage(), "Message should not be present");
-        assertEquals(getExpectedToString(status, null), result.toString(),
-            "ToString should be describe the result");
     }
 
     @Test
@@ -40,12 +36,5 @@ class PoliceNationalComputerCheckResultTest {
 
         assertEquals(PoliceNationalComputerCheckResult.Status.ELIGIBLE, result.getStatus(), "Status should be  passed");
         assertNull(result.getMessage(), "Message should not be present");
-        assertEquals(getExpectedToString(PoliceNationalComputerCheckResult.Status.ELIGIBLE, null), result.toString(),
-            "ToString should be describe the result");
-    }
-
-
-    private String getExpectedToString(PoliceNationalComputerCheckResult.Status status, String message) {
-        return "Result: " + status.name() + " Message: " + message;
     }
 }

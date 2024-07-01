@@ -1,6 +1,5 @@
 package uk.gov.hmcts.juror.pnc.check.utils;
 
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 
@@ -18,17 +17,10 @@ public final class Utilities {
             .replaceAll("\\[[^]]*]", "") //Remove square braces
             .replaceAll("[^/_'A-Za-z0-9 -]", "") //Removes all none support characters
             .replaceAll("\\s+", "") //Removes spaces
-        ;
-        if (!originalTextToClean.equals(textBeingCleaned)) {
-            log.info("Juror name " + originalTextToClean + " contained unsupported chars and has been changed to "
-                + textBeingCleaned);
-        }
+            ;
+        log.trace("Juror name {} contained unsupported chars and has been changed to {}", originalTextToClean,
+            textBeingCleaned);
         return textBeingCleaned;
-    }
-
-    @SneakyThrows
-    public static void sleep(long timeMs) {
-        Thread.sleep(timeMs);
     }
 
     public static Integer getInteger(String intString) {
@@ -38,7 +30,7 @@ public final class Utilities {
         try {
             return Integer.parseInt(intString);
         } catch (NumberFormatException e) {
-            log.error("Unable to parse input ' " + intString + "' into an integer", e);
+            log.error("Unable to parse input ' {}' into an integer", intString, e);
             return null;
         }
     }

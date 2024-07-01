@@ -48,9 +48,8 @@ public class DisposalMustNotEndWithInRule extends DisposalRule {
         final Calendar maximumAllowedEndDate = getMaximumAllowedEndDate();
 
         if (log.isDebugEnabled()) {
-            log.debug(
-                "Sentence must end before: " + slashDateFormat.format(Date.from(maximumAllowedEndDate.toInstant()))
-                    + "\nSentence ended at: " + slashDateFormat.format(
+            log.debug("Sentence must end before: {}\nSentence ended at: {}",
+                slashDateFormat.format(Date.from(maximumAllowedEndDate.toInstant())), slashDateFormat.format(
                     Date.from(effectiveEndOfSentenceCalendar.toInstant())));
         }
         return !effectiveEndOfSentenceCalendar.after(maximumAllowedEndDate);
@@ -108,7 +107,7 @@ public class DisposalMustNotEndWithInRule extends DisposalRule {
                 date = noSlashDateFormat.parse(dateStr);
             }
         } catch (ParseException e) {
-            log.error("stringToDate Error parsing a date " + dateStr);
+            log.error("stringToDate Error parsing a date {}", dateStr);
             throw new InternalServerException("Unable to parse date string: '" + dateStr + "'", e);
         }
         Calendar calendar = Calendar.getInstance();

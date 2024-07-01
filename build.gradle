@@ -271,7 +271,7 @@ dependencies {
     compileOnly 'jakarta.servlet:jakarta.servlet-api:6.1.0'
 
     // Validation
-    testImplementation 'org.wiremock:wiremock-standalone:3.7.0'
+    testImplementation 'org.wiremock:wiremock-standalone:3.8.0'
 
     // Security
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6'

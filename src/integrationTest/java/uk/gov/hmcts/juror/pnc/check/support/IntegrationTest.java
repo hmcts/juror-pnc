@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import uk.gov.hmcts.juror.pnc.check.client.contracts.JobExecutionServiceClient;
+import uk.gov.hmcts.juror.pnc.check.client.contracts.JurorServiceClient;
 import uk.gov.hmcts.juror.pnc.check.config.RemoteConfig;
 import uk.gov.hmcts.juror.pnc.check.model.JurorCheckBatch;
 import uk.gov.hmcts.juror.pnc.check.model.JurorCheckRequest;
@@ -106,7 +107,9 @@ public abstract class IntegrationTest {
     protected void beforeEach() {
         WireMock.stubFor(WireMock.patch(urlPathTemplate(config.getJurorService().getUrl()))
             .withHeader(HttpHeaders.CONTENT_TYPE, WireMock.containing("application/json"))
-            .willReturn(WireMock.status(HttpStatus.ACCEPTED.value())
+            .willReturn(WireMock.jsonResponse(
+                new JurorServiceClient.PoliceCheckStatusDto(PoliceNationalComputerCheckResult.Status.ELIGIBLE),
+                    HttpStatus.ACCEPTED.value())
                 .withHeader(HttpHeaders.CONNECTION, "close")));
     }
 
@@ -407,6 +410,7 @@ public abstract class IntegrationTest {
         return new BulkRequest(jurorCheckRequest, personResponse,
             PoliceNationalComputerCheckResult.Status.ELIGIBLE);
     }
+
 
     protected BulkRequest createBulkRequestOnBail(JurorCheckRequest jurorCheckRequest) {
         GetPersonDetailsResponse personResponse = createGetPersonDetailsResponse(jurorCheckRequest, "", true, null);

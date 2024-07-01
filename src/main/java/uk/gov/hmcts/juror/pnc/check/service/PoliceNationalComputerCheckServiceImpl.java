@@ -55,10 +55,10 @@ public class PoliceNationalComputerCheckServiceImpl implements PoliceNationalCom
     @Override
     public PoliceNationalComputerCheckResult performPoliceCheck(
         final JurorCheckDetails jurorCheckDetails) {
-        log.info("Performing police check for Juror: " + jurorCheckDetails.getJurorNumber());
+        log.info("Performing police check for Juror: {}", jurorCheckDetails.getJurorNumber());
         PoliceNationalComputerCheckResult result = getPoliceCheckResult(jurorCheckDetails);
         savePoliceCheckResult(jurorCheckDetails, result);
-        log.info("Juror check complete for juror: " + jurorCheckDetails.getJurorNumber());
+        log.info("Juror check complete for juror: {}", jurorCheckDetails.getJurorNumber());
         return result;
     }
 
@@ -69,7 +69,7 @@ public class PoliceNationalComputerCheckServiceImpl implements PoliceNationalCom
                     .mapJurorCheckRequestToGetPersonDetails(jurorCheckDetails);
 
             if (getPersonDetails.getSearchName().matches(".*\\d.*")) {
-                log.warn("Juror: " + jurorCheckDetails.getJurorNumber() + " not processed as name contains numerics");
+                log.warn("Juror: {} not processed as name contains numerics", jurorCheckDetails.getJurorNumber());
                 return new PoliceNationalComputerCheckResult(
                     PoliceNationalComputerCheckResult.Status.ERROR_RETRY_NAME_HAS_NUMERICS);
             }
@@ -87,22 +87,21 @@ public class PoliceNationalComputerCheckServiceImpl implements PoliceNationalCom
     }
 
     private void savePoliceCheckResult(JurorCheckDetails jurorCheckDetails, PoliceNationalComputerCheckResult result) {
-        jurorCheckDetails.setResult(result);
-        log.trace("Attempting to save result: " + result + " for juror " + jurorCheckDetails.getJurorNumber());
         if (result != null) {
             try {
                 JurorServiceClient.PoliceCheckStatusDto policeCheckStatusDto =
                     this.jurorServiceClient.call(jurorCheckDetails.getJurorNumber(),
                         new JurorServiceClient.PoliceCheckStatusDto(result.getStatus()));
-
                 result.setMaxRetiresExceed(policeCheckStatusDto.getStatus()
                     .equals(PoliceNationalComputerCheckResult.Status.UNCHECKED_MAX_RETRIES_EXCEEDED));
-                log.info("Juror check result saved for juror: " + jurorCheckDetails.getJurorNumber());
-            } catch (RemoteGatewayException exception) {
+                log.info("Juror check result saved for juror: {}", jurorCheckDetails.getJurorNumber());
+            } catch (Exception exception) {
                 result.setStatus(PoliceNationalComputerCheckResult.Status.ERROR_RETRY_FAILED_TO_UPDATE_BACKEND);
-                log.error("Failed to save juror result on backend: " + jurorCheckDetails.getJurorNumber(), exception);
+                log.error("Failed to save juror result on backend: {}", jurorCheckDetails.getJurorNumber(), exception);
             }
         }
+        jurorCheckDetails.setResult(result);
+        log.trace("Attempting to save result: {} for juror {}", result, jurorCheckDetails.getJurorNumber());
     }
 
     @Override
@@ -168,15 +167,15 @@ public class PoliceNationalComputerCheckServiceImpl implements PoliceNationalCom
 
     PoliceNationalComputerCheckResult validatePoliceCheckResponse(String jurorNumber,
                                                                   @NotNull PersonDetailsDto personDetails) {
-        log.info("Validating Juror: " + jurorNumber);
+        log.info("Validating Juror: {}", jurorNumber);
         Optional<PoliceNationalComputerCheckResult> resultOptional = checkErrorReason(jurorNumber, personDetails);
         if (resultOptional.isPresent()) {
-            log.info("Error Reason checks failed for juror: " + jurorNumber);
+            log.trace("Error Reason checks failed for juror: {}", jurorNumber);
             return resultOptional.get();
         }
-        log.info("Error Reason checks passed for juror: " + jurorNumber);
-        log.info("Validating person details for juror: " + jurorNumber + " - "
-            + personDetails.getPersonDtos().size() + " persons entries found");
+        log.trace("Error Reason checks passed for juror: {}", jurorNumber);
+        log.trace("Validating person details for juror: {} - {} persons entries found", jurorNumber,
+            personDetails.getPersonDtos().size());
         for (PersonDto person : personDetails.getPersonDtos()) {
             RuleValidationResult ruleValidationResult = this.ruleService.fireRules(RuleSets.PERSON_RULE_SET, person);
 
@@ -188,7 +187,7 @@ public class PoliceNationalComputerCheckServiceImpl implements PoliceNationalCom
             }
 
             if (!ruleValidationResult.isPassed()) {
-                log.info("Validation rules failed for juror: " + jurorNumber);
+                log.trace("Validation rules failed for juror: {}", jurorNumber);
                 return new PoliceNationalComputerCheckResult(PoliceNationalComputerCheckResult.Status.INELIGIBLE,
                     ruleValidationResult.getMessage());
             }
@@ -202,9 +201,9 @@ public class PoliceNationalComputerCheckServiceImpl implements PoliceNationalCom
         final PersonDetailsDto personDetailsDto) {
 
         final String errorReason = personDetailsDto.getErrorReason();
-        log.info("ResponseCode: " + errorReason);
+        log.info("ResponseCode: {}", errorReason);
         if (errorReason == null) {
-            log.info("No data returned for juror " + jurorNumber);
+            log.info("No data returned for juror {}", jurorNumber);
             return Optional.of(
                 new PoliceNationalComputerCheckResult(
                     PoliceNationalComputerCheckResult.Status.ERROR_RETRY_NO_ERROR_REASON,
@@ -213,11 +212,10 @@ public class PoliceNationalComputerCheckServiceImpl implements PoliceNationalCom
 
         if (!errorReason.isBlank()) {
             if (errorReason.startsWith(Constants.NO_RECORDS_FOUND_ERROR_CODE)) {
-                log.debug("No PNC data for juror " + jurorNumber + ", response code " + errorReason);
+                log.debug("No PNC data for juror {}, response code {}", jurorNumber, errorReason);
                 return Optional.empty();// Pass if onBail check passes
             } else {
-                log.error("Error checking juror " + jurorNumber);
-                log.error("Returned error code: " + errorReason + ", for juror " + jurorNumber);
+                log.error("Error checking juror {}", jurorNumber);
                 return Optional.of(
                     new PoliceNationalComputerCheckResult(
                         PoliceNationalComputerCheckResult.Status.ERROR_RETRY_OTHER_ERROR_CODE,

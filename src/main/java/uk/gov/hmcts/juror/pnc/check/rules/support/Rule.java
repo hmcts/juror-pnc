@@ -27,9 +27,9 @@ public abstract class Rule<T> {
         if (failOnPass) {
             result = !result;
         }
-        log.debug("Rule: " + this.getName() + ": " + (result
+        log.trace("Rule: {}: {}", this.getName(), result
             ? "PASSED"
-            : "FAILED"));
+            : "FAILED");
         return result;
     }
 

@@ -34,7 +34,7 @@ public abstract class DisposalRule extends Rule<DisposalDto> {
     public boolean validate(DisposalDto value) {
         Integer disposalCode = Utilities.getInteger(value.getDisposalCode());
         if (!supportedCodes.isEmpty() && (disposalCode == null || !supportedCodes.contains(disposalCode))) {
-            log.debug("Skipping rule: " + this.getName() + " disposal code not supported");
+            log.debug("Skipping rule: {} disposal code not supported", this.getName());
             return true;
         }
         return super.validate(value);

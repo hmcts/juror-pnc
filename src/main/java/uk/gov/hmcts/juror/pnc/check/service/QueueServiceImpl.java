@@ -51,7 +51,7 @@ public class QueueServiceImpl implements QueueService {
         "java:S2142"
     })
     public void queueRequests(Collection<JurorCheckDetails> requests, JurorCheckBatch.MetaData metaData) {
-        log.info(requests.size() + " checks are being queued");
+        log.info("{} checks are being queued", requests.size());
         final JurorCheckBatch jurorCheckBatch = new JurorCheckBatch(
             Optional.ofNullable(metaData)
                 .orElseGet(() -> JurorCheckBatch.MetaData.builder()

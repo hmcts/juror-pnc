@@ -35,7 +35,7 @@ public class JurorCheckBatch {
 
     public void incrementResultsCounter() {
         this.countDownLatch.countDown();
-        log.trace(this.countDownLatch.getCount() + " checks left in this batch");
+        log.trace("{} checks left in this batch", this.countDownLatch.getCount());
     }
 
     public long getTotalResults() {

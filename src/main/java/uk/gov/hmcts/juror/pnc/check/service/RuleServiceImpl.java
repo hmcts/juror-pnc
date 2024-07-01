@@ -73,7 +73,7 @@ public class RuleServiceImpl implements RuleService {
     )
     Rule<?> createRuleFromRuleConfig(RuleConfig.ConditionalRule conditionalRule) {
         if (conditionalRule.getConditions() == null || conditionalRule.getConditions().isEmpty()) {
-            log.info("Using AllowedDisposalCodes as no conditions found for rule: " + conditionalRule);
+            log.trace("Using AllowedDisposalCodes as no conditions found for rule: {}", conditionalRule);
             return new AllowedDisposalCodesRule(conditionalRule.getWhenCodeIsOneOf(), false);
         }
         AndRule disposalAndRule = new AndRule(conditionalRule.getWhenCodeIsOneOf(), false);
@@ -118,7 +118,7 @@ public class RuleServiceImpl implements RuleService {
     @Override
     @SuppressWarnings("unchecked")
     public <T> RuleValidationResult fireRules(@NotNull RuleSet<T> ruleSet, Collection<T> values) {
-        log.trace("Triggering rules for: " + ruleSet.getSupportedClass());
+        log.trace("Triggering rules for: {}", ruleSet.getSupportedClass());
         final Optional<List<Rule<?>>> rulesOptional = Optional.ofNullable(rulesetsMap.get(ruleSet));
         if (rulesOptional.isEmpty()) {
             throw new InternalServerException("Ruleset for "
@@ -130,8 +130,7 @@ public class RuleServiceImpl implements RuleService {
                 .filter(rule -> !(((Rule<T>) rule).validate(value)))
                 .findFirst();
             if (ruleOptional.isPresent()) {
-                log.info("Rule failed " + ruleOptional.get().getDescription());
-                log.debug("Value: " + value);
+                log.trace("Rule failed {}", ruleOptional.get().getDescription());
                 return RuleValidationResult.failed(ruleOptional.get().getDescription());
             }
         }

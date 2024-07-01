@@ -21,11 +21,6 @@ public class PoliceNationalComputerCheckResult {
         return new PoliceNationalComputerCheckResult(Status.ELIGIBLE);
     }
 
-    @Override
-    public String toString() {
-        return "Result: " + this.status + " Message: " + this.message;
-    }
-
     public enum Status {
         ELIGIBLE,
         INELIGIBLE,

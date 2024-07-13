@@ -22,6 +22,7 @@ import uk.gov.hmcts.juror.pnc.check.service.contracts.RuleService;
 import uk.gov.hmcts.juror.standard.service.exceptions.RemoteGatewayException;
 import uk.police.npia.juror.schema.v1.GetPersonDetails;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -210,7 +211,8 @@ public class PoliceNationalComputerCheckServiceImpl implements PoliceNationalCom
                     "No data returned for juror. Unable to check"));
         }
         if (!errorReason.isBlank()) {
-            if (errorReason.toLowerCase().contains(Constants.NO_RECORDS_FOUND_ERROR_CODE.toLowerCase())) {
+            if (errorReason.toLowerCase(Locale.getDefault())
+                .contains(Constants.NO_RECORDS_FOUND_ERROR_CODE.toLowerCase(Locale.getDefault()))) {
                 log.debug("No PNC data for juror {}, response code {}", jurorNumber, errorReason);
                 return Optional.empty();// Pass if onBail check passes
             } else {

@@ -208,7 +208,20 @@ class EligibilityCheckSingleTest extends IntegrationTest {
         performValidSingle(
             jurorCheckRequest,
             createGetPersonDetailsResponse(jurorCheckRequest,
-                "JUR001 - No Records Found: abc", false, null),
+                "JUR001 - No records found: abc", false, null),
+            PoliceNationalComputerCheckResult.Status.ELIGIBLE
+        );
+    }
+
+    @Test
+    @DisplayName("ELIGIBLE: Error Reason starts with 'Jur001 - No Records foUnd:' - Mixed Case")
+    @SuppressWarnings("AbbreviationAsWordInName")
+    void eligibleErrorReasonStartsWithJur001MixedCase() throws Exception {
+        JurorCheckRequest jurorCheckRequest = getTypicalJurorCheckRequest();
+        performValidSingle(
+            jurorCheckRequest,
+            createGetPersonDetailsResponse(jurorCheckRequest,
+                "Jur001 - No Records foUnd: abc", false, null),
             PoliceNationalComputerCheckResult.Status.ELIGIBLE
         );
     }

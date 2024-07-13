@@ -209,9 +209,8 @@ public class PoliceNationalComputerCheckServiceImpl implements PoliceNationalCom
                     PoliceNationalComputerCheckResult.Status.ERROR_RETRY_NO_ERROR_REASON,
                     "No data returned for juror. Unable to check"));
         }
-
         if (!errorReason.isBlank()) {
-            if (errorReason.startsWith(Constants.NO_RECORDS_FOUND_ERROR_CODE)) {
+            if (errorReason.toLowerCase().contains(Constants.NO_RECORDS_FOUND_ERROR_CODE.toLowerCase())) {
                 log.debug("No PNC data for juror {}, response code {}", jurorNumber, errorReason);
                 return Optional.empty();// Pass if onBail check passes
             } else {

@@ -119,7 +119,7 @@ class DisposalMustNotEndWithInRuleTest extends AbstractDisposalRuleTest<Disposal
                 .sentencePeriod("m").sentenceAmount("12").build(),
             (supportedCodes, failOnPass) -> createRule(supportedCodes, failOnPass, 1, DateUnit.YEARS)));
 
-        // Need to add 1 day to the sentence amount as the rule is exclusive
+        // Need to add 1 day to the sentence amount as 2024 is a leap year and the rule is exclusive
         builder.add(disposalArgument("1 Year Disposal which started 2 years 1 day ago."
                 + " Must not end within 1 years (Sentence Period is 'd')",
             DisposalDto.builder().disposalCode("1")
@@ -204,7 +204,7 @@ class DisposalMustNotEndWithInRuleTest extends AbstractDisposalRuleTest<Disposal
                 .sentencePeriod("m").sentenceAmount("12").build(),
             (supportedCodes, failOnPass) -> createRule(supportedCodes, failOnPass, 1, DateUnit.YEARS)));
 
-        // Need to add 1 day to the sentence amount as the rule is exclusive
+        // Need to add 1 day to the sentence amount as 2024 is a leap year and the rule is exclusive
         builder.add(disposalArgument("1 Year Disposal which started 2 years."
                 + " Must not end within 1 years (Sentence Period is 'd')",
             DisposalDto.builder().disposalCode("1")

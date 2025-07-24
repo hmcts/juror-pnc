@@ -263,7 +263,7 @@ dependencies {
 
     implementation 'org.jetbrains:annotations:26.0.2'
     testImplementation 'junit:junit:4.13.2'
-    runtimeOnly(group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '3.7.0')
+    runtimeOnly(group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '3.7.3')
 
     // Data Mapping
     implementation 'org.mapstruct:mapstruct:1.6.3'

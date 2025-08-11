@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.transport.http.ClientHttpRequestMessageSender;
 import uk.gov.hmcts.juror.standard.client.SoapWebServiceTemplate;
@@ -73,10 +74,15 @@ public class ApplicationBeans {
                                                     final JwtService jwtService) {
         final List<ClientHttpRequestInterceptor> clientHttpRequestInterceptorList =
             List.of(new JwtAuthenticationInterceptor(jwtService, webConfig.getSecurity()));
+
+        String baseUrl = webConfig.getScheme() + "://" + webConfig.getHost() + ":" + webConfig.getPort();
+
+        DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory(baseUrl);
+        factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.URI_COMPONENT);
+
         return new RestTemplateBuilder()
             .requestFactory(webConfig::getRequestFactory)
-            .uriTemplateHandler(new RootUriTemplateHandler(
-                webConfig.getScheme() + "://" + webConfig.getHost() + ":" + webConfig.getPort()))
+            .uriTemplateHandler(factory)
             .additionalInterceptors(clientHttpRequestInterceptorList);
     }
 }

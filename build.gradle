@@ -212,10 +212,13 @@ repositories {
     url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1'
   }
 }
+dependencies {
+  implementation 'com.github.hmcts:juror-spring-support-library:1.1.5' // use the local version
+}
 
 ext {
   log4JVersion = "2.24.3"
-  springVersion = "3.3.1"
+  springVersion = "3.5.4"
   springSeceurityVersion = "6.1.4"
   lombokVersion = "1.18.36"
 }
@@ -228,7 +231,7 @@ dependencies {
   implementation 'ch.qos.logback:logback-classic:1.5.16'
   implementation 'ch.qos.logback:logback-core:1.5.16'
   //END
-  implementation 'com.github.hmcts:juror-spring-support-library:1.1.4'
+ // implementation 'com.github.hmcts:juror-spring-support-library:1.1.4'
 
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springVersion
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springVersion
@@ -238,7 +241,7 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: springVersion
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: springVersion
 
-  implementation group: 'org.springframework.data', name: 'spring-data-commons', version: springVersion
+  implementation "org.springframework.data:spring-data-commons:3.5.2"
   implementation 'org.springframework.boot:spring-boot-starter-web-services'
 
 

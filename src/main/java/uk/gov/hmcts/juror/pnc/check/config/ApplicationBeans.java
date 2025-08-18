@@ -1,7 +1,6 @@
 package uk.gov.hmcts.juror.pnc.check.config;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.boot.web.client.RootUriTemplateHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;

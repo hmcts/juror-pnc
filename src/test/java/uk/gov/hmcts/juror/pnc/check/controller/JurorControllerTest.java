@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.ResultActions;
 import uk.gov.hmcts.juror.pnc.check.mapper.JurorRequestMapper;
@@ -53,10 +53,10 @@ import static uk.gov.hmcts.juror.pnc.check.testsupport.TestUtil.replaceJsonPath;
 @SuppressWarnings("PMD.ExcessiveImports")
 public class JurorControllerTest {
 
-    @MockBean
+    @MockitoBean
     private QueueService queueService;
 
-    @MockBean
+    @MockitoBean
     private JurorRequestMapper jurorRequestMapper;
     private static final String CONTROLLER_BASEURL = "/jurors/check";
     private static final String RESOURCE_PREFIX = "/testData/jurorController";

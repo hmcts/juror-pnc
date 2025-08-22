@@ -1,5 +1,6 @@
 package uk.gov.hmcts.juror.pnc.check.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -15,10 +16,14 @@ import uk.gov.hmcts.juror.standard.config.SoapConfig;
 import uk.gov.hmcts.juror.standard.config.WebConfig;
 import uk.gov.hmcts.juror.standard.service.contracts.auth.JwtService;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.function.Function;
 
 @Component("PNCApplicationBeans")
+@Slf4j
+@SuppressWarnings("PMD")
 public class ApplicationBeans {
 
     @Bean
@@ -71,17 +76,30 @@ public class ApplicationBeans {
     @SuppressWarnings("removal")
     private RestTemplateBuilder restTemplateBuilder(final WebConfig webConfig,
                                                     final JwtService jwtService) {
-        final List<ClientHttpRequestInterceptor> clientHttpRequestInterceptorList =
+
+        final List<ClientHttpRequestInterceptor> interceptors =
             List.of(new JwtAuthenticationInterceptor(jwtService, webConfig.getSecurity()));
 
-        String baseUrl = webConfig.getScheme() + "://" + webConfig.getHost() + ":" + webConfig.getPort();
+        String baseUrl;
+        try {
+            int port = webConfig.getPort();
+            URI uri = new URI(webConfig.getScheme(), null, webConfig.getHost(), port, null, null, null);
+            baseUrl = uri.toString();
+        } catch (URISyntaxException | NumberFormatException | NullPointerException e) {
+            log.error("Invalid URI for RestTemplate: scheme={}, host={}, port={}",
+                      webConfig.getScheme(), webConfig.getHost(), webConfig.getPort(), e);
+            throw new IllegalStateException("Cannot build RestTemplate: invalid URI components", e);
+        }
 
-        DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory(baseUrl);
-        factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.URI_COMPONENT);
+        log.info("Creating RestTemplate for base URL: {}", baseUrl);
+
+        DefaultUriBuilderFactory uriBuilderFactory = new DefaultUriBuilderFactory(baseUrl);
+        uriBuilderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.URI_COMPONENT);
 
         return new RestTemplateBuilder()
             .requestFactory(webConfig::getRequestFactory)
-            .uriTemplateHandler(factory)
-            .additionalInterceptors(clientHttpRequestInterceptorList);
+            .uriTemplateHandler(uriBuilderFactory)
+            .additionalInterceptors(interceptors);
     }
 }
+

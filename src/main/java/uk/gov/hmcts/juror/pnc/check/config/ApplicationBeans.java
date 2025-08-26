@@ -86,7 +86,7 @@ public class ApplicationBeans {
             URI uri = new URI(webConfig.getScheme(), null, webConfig.getHost(), port, null, null, null);
             baseUrl = uri.toString();
         } catch (URISyntaxException | NumberFormatException | NullPointerException e) {
-            log.error("Invalid URI for RestTemplate: scheme={}, host={}, port={}",
+            log.info("Invalid URI for RestTemplate: scheme={}, host={}, port={}",
                       webConfig.getScheme(), webConfig.getHost(), webConfig.getPort(), e);
             throw new IllegalStateException("Cannot build RestTemplate: invalid URI components", e);
         }

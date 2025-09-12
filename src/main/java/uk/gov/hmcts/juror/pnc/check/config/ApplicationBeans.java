@@ -1,11 +1,12 @@
 package uk.gov.hmcts.juror.pnc.check.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.boot.web.client.RootUriTemplateHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.transport.http.ClientHttpRequestMessageSender;
 import uk.gov.hmcts.juror.standard.client.SoapWebServiceTemplate;
@@ -15,10 +16,14 @@ import uk.gov.hmcts.juror.standard.config.SoapConfig;
 import uk.gov.hmcts.juror.standard.config.WebConfig;
 import uk.gov.hmcts.juror.standard.service.contracts.auth.JwtService;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.function.Function;
 
 @Component("PNCApplicationBeans")
+@Slf4j
+@SuppressWarnings("PMD")
 public class ApplicationBeans {
 
     @Bean
@@ -71,12 +76,30 @@ public class ApplicationBeans {
     @SuppressWarnings("removal")
     private RestTemplateBuilder restTemplateBuilder(final WebConfig webConfig,
                                                     final JwtService jwtService) {
-        final List<ClientHttpRequestInterceptor> clientHttpRequestInterceptorList =
+
+        final List<ClientHttpRequestInterceptor> interceptors =
             List.of(new JwtAuthenticationInterceptor(jwtService, webConfig.getSecurity()));
+
+        String baseUrl;
+        try {
+            int port = webConfig.getPort();
+            URI uri = new URI(webConfig.getScheme(), null, webConfig.getHost(), port, null, null, null);
+            baseUrl = uri.toString();
+        } catch (URISyntaxException | NumberFormatException | NullPointerException e) {
+            log.info("Invalid URI for RestTemplate: scheme={}, host={}, port={}",
+                      webConfig.getScheme(), webConfig.getHost(), webConfig.getPort(), e);
+            throw new IllegalStateException("Cannot build RestTemplate: invalid URI components", e);
+        }
+
+        log.info("Creating RestTemplate for base URL: {}", baseUrl);
+
+        DefaultUriBuilderFactory uriBuilderFactory = new DefaultUriBuilderFactory(baseUrl);
+        uriBuilderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.URI_COMPONENT);
+
         return new RestTemplateBuilder()
             .requestFactory(webConfig::getRequestFactory)
-            .uriTemplateHandler(new RootUriTemplateHandler(
-                webConfig.getScheme() + "://" + webConfig.getHost() + ":" + webConfig.getPort()))
-            .additionalInterceptors(clientHttpRequestInterceptorList);
+            .uriTemplateHandler(uriBuilderFactory)
+            .additionalInterceptors(interceptors);
     }
 }
+

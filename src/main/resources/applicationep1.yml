@@ -18,6 +18,9 @@ uk:
                   claims:
                     tbc: tbc
               job-execution-service:
+                scheme: http
+                host: localhost
+                port: 8085
                 security:
                   issuer: pnc-check-service
                   token-validity: 160000
@@ -26,9 +29,6 @@ uk:
                   claims:
                     permissions:
                       - job::update::pnc
-                scheme: http
-                host: localhost
-                port: 8085
               police-national-computer-service:
                 pncTerminal: pncTerminal
                 pncUserId: pncUserId
@@ -54,6 +54,7 @@ uk:
                   enable: false
         security:
           secret: ${SECRET:WW91clZlcnlWZXJ5VmVyeVNlY3JldEtleVRoYXRJc1NvU2VjcmV0SURvbnRFdmVuS25vd0l0}
+          token-validity: 160000
 logging:
   level:
     uk.gov.hmcts.juror: info

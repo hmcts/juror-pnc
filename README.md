@@ -3,7 +3,7 @@
 ## Building and deploying the application
 
 
-### Environmental Variables
+### Environmental Variables 
 ```
 SECRET=
 

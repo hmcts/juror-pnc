@@ -7,6 +7,7 @@ import uk.gov.hmcts.juror.pnc.check.model.pnc.DisposalDto;
 import uk.gov.hmcts.juror.pnc.check.model.pnc.HeaderTypeDto;
 import uk.gov.hmcts.juror.pnc.check.model.pnc.PersonDetailsDto;
 import uk.gov.hmcts.juror.pnc.check.model.pnc.PersonDto;
+import uk.gov.hmcts.juror.pnc.check.utils.Utilities;
 import uk.police.npia.juror.schema.v1.Disposal;
 import uk.police.npia.juror.schema.v1.GetPersonDetailsResponse;
 import uk.police.npia.juror.schema.v1.PNCAIHeaderType;
@@ -17,8 +18,6 @@ import java.util.Collections;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-@SuppressWarnings("PMD.SystemPrintln") // this is for debugging purposes,
-// we can remove it once we have confirmed the mapping is working correctly
 public interface PersonDetailsDtoMapper {
     @Mapping(target = "personDtos", source = "details")
     PersonDetailsDto mapToPersonDetailsDto(GetPersonDetailsResponse getPersonDetailsResponse);
@@ -41,8 +40,8 @@ public interface PersonDetailsDtoMapper {
             return Collections.emptyList();
         }
 
-        // log out the raw person details for debugging purposes
-        System.out.println("Raw person details: " + personDetails.getValue());
+        String xmlString = Utilities.toXml(personDetails);
+        Utilities.logSomeInfo("Received PersonDetails XML: " + xmlString);
 
         return mapPersons(personDetails.getValue().getPerson());
     }

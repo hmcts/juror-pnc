@@ -249,11 +249,6 @@ dependencies {
 
   implementation group: 'io.rest-assured', name: 'rest-assured', version: '5.5.6'
 
-  configurations.configureEach {
-    resolutionStrategy.force "org.glassfish.jaxb:jaxb-runtime:4.0.4"
-  }
-
-
   // Database, repository
   implementation 'jakarta.persistence:jakarta.persistence-api:3.2.0'
   implementation 'org.postgresql:postgresql:42.7.5'
@@ -299,8 +294,8 @@ dependencies {
   //Other
   implementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1'
   implementation 'org.apache.httpcomponents.client5:httpclient5:5.4.4'
-  jaxb("org.glassfish.jaxb:jaxb-xjc:4.0.4")
-
+  jaxb("org.glassfish.jaxb:jaxb-xjc")
+  jaxb("org.glassfish.jaxb:jaxb-runtime")
 }
 
 mainClassName = 'uk.gov.hmcts.juror.pnc.check.Application'

@@ -249,7 +249,7 @@ dependencies {
 
   implementation group: 'io.rest-assured', name: 'rest-assured', version: '5.5.6'
 
-  implementation 'org.glassfish.jaxb:jaxb-runtime'
+  implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.4'
 
   // Database, repository
   implementation 'jakarta.persistence:jakarta.persistence-api:3.2.0'

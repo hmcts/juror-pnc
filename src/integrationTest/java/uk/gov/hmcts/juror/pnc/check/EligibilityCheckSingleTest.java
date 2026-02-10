@@ -1,6 +1,9 @@
 package uk.gov.hmcts.juror.pnc.check;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.Marshaller;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,11 +19,15 @@ import uk.gov.hmcts.juror.pnc.check.model.PoliceNationalComputerCheckResult;
 import uk.gov.hmcts.juror.pnc.check.model.pnc.DisposalDto;
 import uk.gov.hmcts.juror.pnc.check.support.IntegrationTest;
 import uk.gov.hmcts.juror.pnc.check.support.TestConstants;
+import uk.gov.hmcts.juror.pnc.check.utils.Utilities;
 import uk.police.npia.juror.schema.v1.GetPersonDetailsResponse;
+import uk.police.npia.juror.schema.v1.PersonDetails;
 
+import java.io.StringWriter;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
+import javax.xml.namespace.QName;
 
 import static uk.gov.hmcts.juror.pnc.check.support.TestConstants.VALID_DATE_OF_BIRTH;
 import static uk.gov.hmcts.juror.pnc.check.support.TestConstants.VALID_POSTCODE;
@@ -225,6 +232,27 @@ class EligibilityCheckSingleTest extends IntegrationTest {
             PoliceNationalComputerCheckResult.Status.ELIGIBLE
         );
     }
+
+    @Test
+    void testMarshal() throws Exception {
+        // create or obtain a PersonDetails instance
+        PersonDetails pd = new PersonDetails();
+        // populate pd with minimal required fields or obtain from actual source
+
+        JAXBElement<PersonDetails> je = new JAXBElement<>(
+            new QName("urn:uk:police:npia:juror:schema:v1", "PersonDetails"),
+            PersonDetails.class,
+            pd
+        );
+
+        JAXBContext ctx = JAXBContext.newInstance(PersonDetails.class);
+        Marshaller marshaller = ctx.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        StringWriter writer = new StringWriter();
+        marshaller.marshal(je, writer);
+        Utilities.logSomeInfo(writer.toString());
+    }
+
 
     @Test
     @DisplayName("ERROR_RETRY_OTHER_ERROR_CODE: Error Reason starts with something other then 'JUR001 - No Records "

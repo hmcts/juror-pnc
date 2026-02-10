@@ -1,6 +1,8 @@
 package uk.gov.hmcts.juror.pnc.check.mapper;
 
+import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.Marshaller;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import uk.gov.hmcts.juror.pnc.check.model.pnc.DisposalDto;
@@ -8,12 +10,14 @@ import uk.gov.hmcts.juror.pnc.check.model.pnc.HeaderTypeDto;
 import uk.gov.hmcts.juror.pnc.check.model.pnc.PersonDetailsDto;
 import uk.gov.hmcts.juror.pnc.check.model.pnc.PersonDto;
 import uk.gov.hmcts.juror.pnc.check.utils.Utilities;
+import uk.gov.hmcts.juror.standard.service.exceptions.InternalServerException;
 import uk.police.npia.juror.schema.v1.Disposal;
 import uk.police.npia.juror.schema.v1.GetPersonDetailsResponse;
 import uk.police.npia.juror.schema.v1.PNCAIHeaderType;
 import uk.police.npia.juror.schema.v1.Person;
 import uk.police.npia.juror.schema.v1.PersonDetails;
 
+import java.io.StringWriter;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,7 +44,22 @@ public interface PersonDetailsDtoMapper {
             return Collections.emptyList();
         }
 
-        String xmlString = Utilities.toXml(personDetails);
+        String xmlString;
+
+        try {
+            JAXBContext context = JAXBContext.newInstance(PersonDetails.class);
+            Marshaller marshaller = context.createMarshaller();
+
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+            StringWriter writer = new StringWriter();
+            marshaller.marshal(personDetails, writer);
+
+            xmlString = writer.toString();
+        } catch (Exception e) {
+            throw new InternalServerException("Failed to marshal JAXB element", e);
+        }
+
         Utilities.logSomeInfo("Received PersonDetails XML: " + xmlString);
 
         return mapPersons(personDetails.getValue().getPerson());

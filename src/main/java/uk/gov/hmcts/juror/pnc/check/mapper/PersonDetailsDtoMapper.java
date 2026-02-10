@@ -17,6 +17,8 @@ import java.util.Collections;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
+@SuppressWarnings("PMD.SystemPrintln") // this is for debugging purposes,
+// we can remove it once we have confirmed the mapping is working correctly
 public interface PersonDetailsDtoMapper {
     @Mapping(target = "personDtos", source = "details")
     PersonDetailsDto mapToPersonDetailsDto(GetPersonDetailsResponse getPersonDetailsResponse);
@@ -38,6 +40,10 @@ public interface PersonDetailsDtoMapper {
             || personDetails.getValue().getPerson() == null) {
             return Collections.emptyList();
         }
+
+        // log out the raw person details for debugging purposes
+        System.out.println("Raw person details: " + personDetails.getValue());
+
         return mapPersons(personDetails.getValue().getPerson());
     }
 

@@ -28,7 +28,7 @@ public class PoliceNationalComputerClientImpl extends AbstractSoapClient impleme
         super(soapWebServiceTemplate);
 
         this.personDetailsDtoMapper = personDetailsDtoMapper;
-        
+
         CloseableHttpClient httpClient = HttpClients.custom()
             .addInterceptorLast(new SoapHttpLoggingInterceptor())
             .build();

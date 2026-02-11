@@ -34,11 +34,10 @@ public interface PersonDetailsDtoMapper {
 
     default List<PersonDto> map(JAXBElement<PersonDetails> personDetails) {
         if (personDetails == null
-            || personDetails.getValue() == null
-            || personDetails.getValue().getPerson() == null) {
+                || personDetails.getValue() == null
+                || personDetails.getValue().getPerson() == null) {
             return Collections.emptyList();
         }
-
         return mapPersons(personDetails.getValue().getPerson());
     }
 

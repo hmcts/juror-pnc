@@ -60,7 +60,7 @@ uk:
                   scheme: http
                   host: 10.24.1.253
                   port: 8080
-                soap-action: https://${PNC_SERVICE_HOST}:${PNC_SERVICE_POST}/juror
+                soap-action: https://${PNC_SERVICE_HOST}:${PNC_SERVICE_POST}/ei-int1/person-services/v1/ei/juror
               juror-service:
                 scheme: https
                 host: ${JUROR_SERVICE_HOST}

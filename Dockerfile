@@ -6,5 +6,4 @@ COPY lib/applicationinsights.json /opt/app/
 COPY build/libs/juror-pnc.jar /opt/app/
 
 EXPOSE 8080
-ENTRYPOINT ["/usr/bin/java"]
-CMD ["-Djavax.net.debug=ssl,handshake", "-jar", "juror-pnc.jar"]
+CMD [ "juror-pnc.jar" ]

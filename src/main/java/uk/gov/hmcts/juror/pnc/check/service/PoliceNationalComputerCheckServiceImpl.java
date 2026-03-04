@@ -203,14 +203,16 @@ public class PoliceNationalComputerCheckServiceImpl implements PoliceNationalCom
 
         final String errorReason = personDetailsDto.getErrorReason();
         log.info("ResponseCode: {}", errorReason);
-        if (errorReason == null) {
+
+        if (personDetailsDto.getJurorReference() == null) { // check something that should always be present
             log.info("No data returned for juror {}", jurorNumber);
             return Optional.of(
                 new PoliceNationalComputerCheckResult(
                     PoliceNationalComputerCheckResult.Status.ERROR_RETRY_NO_ERROR_REASON,
                     "No data returned for juror. Unable to check"));
         }
-        if (!errorReason.isBlank()) {
+
+        if (errorReason != null && !errorReason.isBlank()) {
             if (errorReason.toLowerCase(Locale.getDefault())
                 .contains(Constants.NO_RECORDS_FOUND_ERROR_CODE.toLowerCase(Locale.getDefault()))) {
                 log.debug("No PNC data for juror {}, response code {}", jurorNumber, errorReason);

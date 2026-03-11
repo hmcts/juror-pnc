@@ -218,27 +218,6 @@ azure:
 logging:
   level:
     uk.gov.hmcts.juror: info
-    org.springframework.web: TRACE
-    org.springframework.ws.server.MessageTracing.sent: TRACE
-    org.springframework.ws.client.MessageTracing.sent: TRACE
-    org.springframework.ws.client.MessageTracing.received: TRACE
-    org.springframework.ws.server.MessageTracing.received: TRACE
-    # Apache HttpClient 5 - wire & headers (very verbose)
-    # org.apache.hc.client5.http.wire: DEBUG
-    org.apache.hc.client5.http.headers: DEBUG
-
-    # Core http logging and exec chain (shows request lifecycle)
-    org.apache.hc.core5.http: DEBUG
-    org.apache.hc.client5.http.impl.classic.MainClientExec: DEBUG
-    org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager: DEBUG
-    org.apache.hc.client5.http.impl.io.DefaultBHttpClientConnection: DEBUG
-
-    # Optional: lower-noise debug for connection manager/exec chain
-    org.apache.hc.client5.http.impl.execchain: DEBUG
-
-    # Spring-WS + Spring HTTP transport logging (you already have the MessageTracing lines)
-    org.springframework.ws.client.MessageTracing: TRACE
-    org.springframework.ws.server.MessageTracing: TRACE
 ---
 spring:
   config:

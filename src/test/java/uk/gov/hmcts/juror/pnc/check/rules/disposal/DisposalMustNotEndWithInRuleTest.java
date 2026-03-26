@@ -124,7 +124,7 @@ class DisposalMustNotEndWithInRuleTest extends AbstractDisposalRuleTest<Disposal
                 + " Must not end within 1 years (Sentence Period is 'd')",
             DisposalDto.builder().disposalCode("1")
                 .disposalEffectiveDate(dateStringFor2YearsOneDayAgo)
-                .sentencePeriod("d").sentenceAmount("366").build(),
+                .sentencePeriod("d").sentenceAmount("365").build(),
             (supportedCodes, failOnPass) -> createRule(supportedCodes, failOnPass, 1, DateUnit.YEARS)));
 
 

@@ -218,6 +218,7 @@ ext {
   springVersion = "3.5.6"
   springSeceurityVersion = "6.1.4"
   lombokVersion = "1.18.36"
+  jwtVersion = "0.13.0"
 }
 
 ext['snakeyaml.version'] = '2.0'
@@ -276,9 +277,9 @@ dependencies {
   testImplementation 'org.wiremock:wiremock-standalone:3.10.0'
 
   // Security
-  implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
-  runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
-  runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+  implementation "io.jsonwebtoken:jjwt-api:${jwtVersion}"
+  runtimeOnly "io.jsonwebtoken:jjwt-impl:${jwtVersion}"
+  runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jwtVersion}"
 
 
   // Web requests

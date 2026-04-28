@@ -1,5 +1,5 @@
 server:
-  port: 8085
+  port: 8080
 
 management:
   endpoint:
@@ -48,7 +48,7 @@ uk:
                 request-method: getPersonDetails
                 response-method: getPersonDetailsResponse
                 ssl:
-                  enable: false
+                  enable: true
                   base64-encoded: true
                   trust-store-location: /mnt/secrets/juror/pnctrusted
                   trust-store-password: ${PNCSTORE_PASSWORD}

@@ -112,7 +112,7 @@ class PoliceNationalComputerCheckServiceImplTest {
             Optional<PoliceNationalComputerCheckResult> resultOptional =
                 policeNationalComputerCheckService.checkErrorReason(
                     TestConstants.JUROR_NUMBER,
-                    PersonDetailsDto.builder().jurorReference("123456789")
+                    PersonDetailsDto.builder()
                         .errorReason("JUR001 - No Records Found:").build()
                 );
             assertFalse(resultOptional.isPresent(),
@@ -126,7 +126,7 @@ class PoliceNationalComputerCheckServiceImplTest {
             Optional<PoliceNationalComputerCheckResult> resultOptional =
                 policeNationalComputerCheckService.checkErrorReason(
                     TestConstants.JUROR_NUMBER,
-                    PersonDetailsDto.builder().jurorReference("123456789").errorReason(errorReason).build()
+                    PersonDetailsDto.builder().errorReason(errorReason).build()
                 );
             assertTrue(resultOptional.isPresent(), "Result should be present");
             PoliceNationalComputerCheckResult result = resultOptional.get();
@@ -141,15 +141,15 @@ class PoliceNationalComputerCheckServiceImplTest {
         }
 
         @Test
-        @DisplayName("Error Reason is null but juror reference is not null")
+        @DisplayName("Error Reason is blank")
         void positiveCheckErrorReasonIsBlank() {
             Optional<PoliceNationalComputerCheckResult> resultOptional =
                 policeNationalComputerCheckService.checkErrorReason(
                     TestConstants.JUROR_NUMBER,
-                    PersonDetailsDto.builder().jurorReference("123456789").build()
+                    PersonDetailsDto.builder().errorReason("").build()
                 );
             assertFalse(resultOptional.isPresent(),
-                "Result should not be returned if error reason is null but juror reference is present");
+                "Result should not be returned if a blank error reason is found");
         }
         //Error reason is blank
     }

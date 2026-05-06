@@ -153,10 +153,13 @@ class EligibilityCheckSingleTest extends IntegrationTest {
     @DisplayName("ERROR_RETRY_NO_ERROR_REASON: Error Reason is null")
     void errorReasonIsNull() throws Exception {
         JurorCheckRequest jurorCheckRequest = getTypicalJurorCheckRequest();
+
+        GetPersonDetailsResponse response = createGetPersonDetailsResponse(jurorCheckRequest,
+                                       null, true, null);
+        response.setJurorReference(null);
         performValidSingle(
             jurorCheckRequest,
-            createGetPersonDetailsResponse(jurorCheckRequest,
-                null, true, null),
+            response,
             PoliceNationalComputerCheckResult.Status.ERROR_RETRY_NO_ERROR_REASON
         );
     }

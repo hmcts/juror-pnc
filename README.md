@@ -8,7 +8,7 @@
 SECRET=
 
 PNC_SERVICE_HOST
-PNC_SERVICE_PORT
+PNC_SERVICE_POST
 PNC_SERVICE_USERNAME
 PNC_SERVICE_PASSWORD
 
@@ -112,3 +112,4 @@ There is no need to remove postgres and java or similar core images.
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+

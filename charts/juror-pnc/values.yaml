@@ -26,7 +26,7 @@ java:
           alias: PNCSTORE_PASSWORD
   environment:
     PNC_SERVICE_HOST: juror-pnc.{{ .Values.global.environment }}.platform.hmcts.net
-    PNC_SERVICE_PORT: 443
+    PNC_SERVICE_POST: 443
     JUROR_SERVICE_HOST: juror-api.{{ .Values.global.environment }}.platform.hmcts.net
     JUROR_SERVICE_PORT: 443
     JOB_EXECUTION_SERVICE_HOST: juror-scheduler-execution.{{ .Values.global.environment }}.platform.hmcts.net

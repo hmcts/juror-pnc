@@ -226,8 +226,8 @@ ext['snakeyaml.version'] = '2.0'
 dependencies {
 
   //Dependency overrides (Can be removed once other dependencies get updates to resolve security issues)
-  implementation 'ch.qos.logback:logback-classic:1.5.18'
-  implementation 'ch.qos.logback:logback-core:1.5.18'
+  implementation 'ch.qos.logback:logback-classic:1.5.34'
+  implementation 'ch.qos.logback:logback-core:1.5.34'
   //END
   implementation 'com.github.hmcts:juror-spring-support-library:1.2.0:plain@jar'
 
@@ -243,7 +243,7 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-web-services'
 
 
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.8.9'
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.8.17'
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: '8.0.0'
   implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4JVersion
   implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: log4JVersion
@@ -282,7 +282,7 @@ dependencies {
 
 
   // Web requests
-  implementation 'org.springframework:spring-webflux:6.2.11'
+  implementation 'org.springframework:spring-webflux:6.2.18'
 
   testImplementation(platform('org.junit:junit-bom:5.11.4'))
   testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'

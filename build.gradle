@@ -203,7 +203,7 @@ ext {
   log4JVersion = "2.24.3"
   springVersion = "3.5.15"
   springSeceurityVersion = "6.1.4"
-  lombokVersion = "1.18.36"
+  lombokVersion = "1.18.46"
   jwtVersion = "0.13.0"
 }
 
@@ -225,7 +225,7 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: springVersion
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: springVersion
 
-  implementation "org.springframework.data:spring-data-commons:3.5.2"
+  implementation "org.springframework.data:spring-data-commons:3.5.12"
   implementation 'org.springframework.boot:spring-boot-starter-web-services'
 
 
@@ -247,9 +247,9 @@ dependencies {
   testImplementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
   testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
 
-  implementation 'org.jetbrains:annotations:26.0.2'
+  implementation 'org.jetbrains:annotations:26.1.0'
   testImplementation 'junit:junit:4.13.2'
-  runtimeOnly(group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '3.7.5')
+  runtimeOnly(group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '3.7.9')
 
   // Data Mapping
   implementation 'org.mapstruct:mapstruct:1.6.3'

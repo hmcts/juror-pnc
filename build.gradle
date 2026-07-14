@@ -238,7 +238,7 @@ dependencies {
 
   // Database, repository
   implementation 'jakarta.persistence:jakarta.persistence-api:3.2.0'
-  implementation 'org.postgresql:postgresql:42.7.11'
+  implementation 'org.postgresql:postgresql:42.7.13'
 
   // Documentation, logging
 

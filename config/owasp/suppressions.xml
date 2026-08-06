@@ -55,4 +55,13 @@
     <cve>CVE-2026-54428</cve>
   </suppress>
 
+  <suppress>
+    <notes><![CDATA[
+   dependency-check findings for tomcat-embed-core-10.1.57.jar and tomcat-embed-websocket-10.1.57.jar.
+   Suppressed pending Spring Boot BOM upgrade to a Tomcat version containing the CVE-2026-66299 fix.
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat-embed-(core|websocket)@10\.1\.57$</packageUrl>
+    <cve>CVE-2026-66299</cve>
+  </suppress>
+
 </suppressions>

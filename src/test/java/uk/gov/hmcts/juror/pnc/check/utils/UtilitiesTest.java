@@ -63,4 +63,9 @@ class UtilitiesTest {
             "Text must get processed correctly"
         );
     }
+
+    @Test
+    void positiveStripBadCharsPreservesNumericCharacters() {
+        assertEquals("Ben10", Utilities.stripBadChars("Ben10"));
+    }
 }

@@ -27,6 +27,16 @@ class NameDetailsTest {
     }
 
     @Test
+    void positiveGetCombinedNameWithUnsupportedMiddleName() {
+        NameDetails nameDetails = NameDetails.builder()
+            .firstName("Ben")
+            .middleName("()")
+            .lastName("Edwards").build();
+        assertEquals("EDWARDS/BEN", nameDetails.getCombinedName(),
+            "Combined name should not include a middle name that is empty after sanitisation");
+    }
+
+    @Test
     void positiveGetCombinedNameWithMmultipleMiddleName() {
         NameDetails nameDetails = NameDetails.builder()
             .firstName("Ben")

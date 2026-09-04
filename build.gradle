@@ -200,7 +200,7 @@ repositories {
 }
 
 ext {
-  log4JVersion = "2.25.5"      // upgraded from 2.24.3 - CVE-2026-49844 fix
+  log4JVersion = "2.26.1"      // upgraded from 2.24.3 - CVE-2026-49844 fix
   springVersion = "3.5.16"     // aligned with plugin version
   springSecurityVersion = "6.1.4"
   lombokVersion = "1.18.46"

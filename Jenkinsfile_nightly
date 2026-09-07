@@ -34,6 +34,7 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 withNightlyPipeline(type, product, component) {
   loadVaultSecrets(secrets)
   enableSlackNotifications('#juror-build-notices')
+  enableFortifyScan()
 
   env.PNC_SERVICE_PNC_TRAN_CODE = 'L_0'
   env.PNC_SERVICE_REASON_CODE = 6
@@ -51,4 +52,8 @@ withNightlyPipeline(type, product, component) {
   env.JUROR_SERVICE_PORT = 443
   env.JOB_EXECUTION_SERVICE_HOST = 'juror-scheduler-execution.staging.platform.hmcts.net'
   env.JOB_EXECUTION_SERVICE_PORT =443
+
+  afterSuccess('fortify-scan') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '/Fortify Scan//*’
+  }
 }

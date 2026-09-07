@@ -67,8 +67,19 @@
    Suppressed pending Spring Boot BOM upgrade beyond 3.5.16.
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-(config|core|crypto|web)@6\.5\.11$</packageUrl>
+    <cve>CVE-2026-47841</cve>
+    <cve>CVE-2026-47842</cve>
     <cve>CVE-2026-59270</cve>
     <cve>CVE-2026-59276</cve>
+  </suppress>
+
+  <suppress>
+    <notes><![CDATA[
+   dependency-check finding for spring-data-jpa-3.5.13.jar.
+   Suppressed pending Spring Boot BOM upgrade beyond 3.5.16.
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.data/spring-data-jpa@3\.5\.13$</packageUrl>
+    <cve>CVE-2026-47834</cve>
   </suppress>
 
   <suppress>

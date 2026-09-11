@@ -1,5 +1,10 @@
 # juror-pnc
 
+## Prerequisites
+
+- [Java 21](https://www.oracle.com/java)
+- [Docker](https://www.docker.com)
+
 ## Building and deploying the application
 
 

@@ -1,5 +1,10 @@
 # juror-pnc
 
+## Prerequisites
+
+- [Java 21](https://www.oracle.com/java)
+- [Docker](https://www.docker.com)
+
 ## Building and deploying the application
 
 
@@ -111,4 +116,4 @@ There is no need to remove postgres and java or similar core images.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

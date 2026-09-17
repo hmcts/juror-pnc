@@ -11,7 +11,7 @@ plugins {
 }
 
 group = 'uk.gov.hmcts.juror'
-version = '5.28.0'
+version = '5.31.0'
 
 java {
   toolchain {
@@ -262,6 +262,8 @@ dependencies {
   // Validation
   testImplementation 'org.wiremock:wiremock-standalone:3.13.2'
 
+  testImplementation 'com.github.hmcts:fortify-client:1.4.10:all'
+
   // Security
   implementation "io.jsonwebtoken:jjwt-api:${jwtVersion}"
   runtimeOnly "io.jsonwebtoken:jjwt-impl:${jwtVersion}"
@@ -313,4 +315,10 @@ task runAllStyleChecks {
   dependsOn 'pmdIntegrationTest'
   dependsOn 'pmdSmokeTest'
   dependsOn 'pmdFunctionalTest'
+}
+
+task fortifyScan(type: JavaExec) {
+  main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
+  classpath += sourceSets.test.runtimeClasspath
+  jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }

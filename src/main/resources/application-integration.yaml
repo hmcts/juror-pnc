@@ -40,8 +40,8 @@ uk:
                 gatewayId: gatewayId
                 requestLocation: requestLocation
                 namespace: http://www.npia.police.uk/juror/schema/v1
-                username: jurordev
-                password: jurorpass
+                username: ${PNC_SERVICE_USERNAME:}
+                password: ${PNC_SERVICE_PASSWORD:}
                 scheme: http
                 host: localhost
                 port: 8085

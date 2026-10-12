@@ -242,7 +242,7 @@ dependencies {
 
   // Database, repository
   implementation 'jakarta.persistence:jakarta.persistence-api:3.2.0'
-  implementation 'org.postgresql:postgresql:42.7.13'  // upgraded from 42.7.11 - CVE-2026-54291 fix
+  implementation 'org.postgresql:postgresql:42.7.14'  // upgraded from 42.7.11 - CVE-2026-54291 fix
 
   // Documentation, logging
   implementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion

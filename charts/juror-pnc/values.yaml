@@ -25,6 +25,8 @@ java:
         - name: pncstore-password
           alias: PNCSTORE_PASSWORD
   environment:
+    # Temporary debugging: log TLS handshakes and client certificate selection; remove after investigation.
+    JDK_JAVA_OPTIONS: '-Djavax.net.debug=ssl,handshake,keymanager'
     PNC_SERVICE_HOST: juror-pnc.{{ .Values.global.environment }}.platform.hmcts.net
     PNC_SERVICE_PORT: 443
     JUROR_SERVICE_HOST: juror-api.{{ .Values.global.environment }}.platform.hmcts.net

@@ -6,12 +6,12 @@ plugins {
   id 'io.spring.dependency-management' version '1.1.7'
   id 'org.springframework.boot' version '4.0.8'
   id 'org.owasp.dependencycheck' version '12.0.2'
-  id 'com.github.ben-manes.versions' version '0.52.0'
+  id 'com.github.ben-manes.versions' version '0.66.0'
   id 'org.sonarqube' version '6.0.1.5171'
 }
 
 group = 'uk.gov.hmcts.juror'
-version = '5.31.0'
+version = '5.33.0'
 
 java {
   toolchain {
@@ -193,25 +193,26 @@ dependencyCheck {
 
 repositories {
   mavenLocal()
-  maven {
-    url = uri('https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1')
+  if (!System.getenv('GITHUB_ACTIONS')) {
+    maven { url'https://artifactory.platform.hmcts.net/artifactory/maven-remotes'}
   }
+  maven { url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1' }
   mavenCentral()
 }
 
 ext {
-  log4JVersion = "2.25.5"      // upgraded from 2.24.3 - CVE-2026-49844 fix
+  log4JVersion = "2.26.1"      // upgraded from 2.24.3 - CVE-2026-49844 fix
   springVersion = "4.0.8"      // aligned with plugin version
   springSecurityVersion = "6.1.4"
-  lombokVersion = "1.18.46"
+  lombokVersion = "1.18.48"
   jwtVersion = "0.13.0"
 }
 
 dependencies {
 
   // Dependency overrides (Can be removed once other dependencies get updates to resolve security issues)
-  implementation 'ch.qos.logback:logback-classic:1.5.38'
-  implementation 'ch.qos.logback:logback-core:1.5.38'
+  implementation 'ch.qos.logback:logback-classic:1.6.5'
+  implementation 'ch.qos.logback:logback-core:1.6.5'
   implementation 'org.apache.httpcomponents.client5:httpclient5:5.4.4'     // pinned - 5.6.2 conflicts with Spring Boot BOM httpcore5:5.3.6 causing SOAP 404s
   // END
 
@@ -238,7 +239,7 @@ dependencies {
 
   // Database, repository
   implementation 'jakarta.persistence:jakarta.persistence-api:3.2.0'
-  implementation 'org.postgresql:postgresql:42.7.13'  // upgraded from 42.7.11 - CVE-2026-54291 fix
+  implementation 'org.postgresql:postgresql:42.7.14'  // upgraded from 42.7.11 - CVE-2026-54291 fix
 
   // Documentation, logging
   implementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
@@ -248,7 +249,7 @@ dependencies {
 
   implementation 'org.jetbrains:annotations:26.1.0'
   testImplementation 'junit:junit:4.13.2'
-  runtimeOnly(group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '3.7.9')
+  runtimeOnly(group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '3.7.10')
 
   // Data Mapping
   implementation 'org.mapstruct:mapstruct:1.6.3'
@@ -259,13 +260,15 @@ dependencies {
   // Validation
   testImplementation 'org.wiremock:wiremock-standalone:3.13.2'
 
+  testImplementation 'com.github.hmcts:fortify-client:1.4.10:all'
+
   // Security
   implementation "io.jsonwebtoken:jjwt-api:${jwtVersion}"
   runtimeOnly "io.jsonwebtoken:jjwt-impl:${jwtVersion}"
   runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jwtVersion}"
 
-  // Required by juror-spring-support-library ExceptionHandling
-  implementation 'org.springframework:spring-webflux'
+  // Web requests
+  implementation 'org.springframework:spring-webflux:7.0.9'
 
   testImplementation(platform('org.junit:junit-bom:5.14.4'))
   testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
@@ -311,4 +314,10 @@ task runAllStyleChecks {
   dependsOn 'pmdIntegrationTest'
   dependsOn 'pmdSmokeTest'
   dependsOn 'pmdFunctionalTest'
+}
+
+task fortifyScan(type: JavaExec) {
+  main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
+  classpath += sourceSets.test.runtimeClasspath
+  jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }

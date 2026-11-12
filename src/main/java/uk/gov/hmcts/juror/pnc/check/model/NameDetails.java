@@ -3,8 +3,10 @@ package uk.gov.hmcts.juror.pnc.check.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
 import uk.gov.hmcts.juror.pnc.check.config.Constants;
 import uk.gov.hmcts.juror.pnc.check.utils.Utilities;
@@ -12,6 +14,8 @@ import uk.gov.hmcts.juror.pnc.check.utils.Utilities;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class NameDetails {
     @JsonProperty("first_name")
     @NotBlank
@@ -41,4 +45,3 @@ public class NameDetails {
         return name.toString().toUpperCase(Constants.LOCALE);
     }
 }
-

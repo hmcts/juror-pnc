@@ -1,7 +1,5 @@
 package uk.gov.hmcts.juror.pnc.check.support;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 import io.jsonwebtoken.io.Decoders;
@@ -19,6 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import uk.gov.hmcts.juror.pnc.check.client.contracts.JobExecutionServiceClient;
 import uk.gov.hmcts.juror.pnc.check.client.contracts.JurorServiceClient;
 import uk.gov.hmcts.juror.pnc.check.config.RemoteConfig;
@@ -143,7 +143,7 @@ public abstract class IntegrationTest {
             .withRequestBody(WireMock.matchingJsonPath("$.status", equalTo(status.name()))));
     }
 
-    protected <T> String convertToJson(T object) throws JsonProcessingException {
+    protected <T> String convertToJson(T object) throws JacksonException {
         return objectMapper.writeValueAsString(object);
     }
 

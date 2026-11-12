@@ -1,7 +1,7 @@
 package uk.gov.hmcts.juror.pnc.check.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.transport.http.ClientHttpRequestMessageSender;
+import uk.gov.hmcts.juror.pnc.check.client.JwtAuthenticationInterceptor;
 import uk.gov.hmcts.juror.standard.client.SoapWebServiceTemplate;
 import uk.gov.hmcts.juror.standard.client.contract.ClientType;
-import uk.gov.hmcts.juror.standard.client.interceptor.JwtAuthenticationInterceptor;
 import uk.gov.hmcts.juror.standard.config.SoapConfig;
 import uk.gov.hmcts.juror.standard.config.WebConfig;
 import uk.gov.hmcts.juror.standard.service.contracts.auth.JwtService;
@@ -32,6 +32,11 @@ public class ApplicationBeans {
         marshaller.setContextPath("uk.police.npia.juror.schema.v1");
 
         return marshaller;
+    }
+
+    @Bean
+    public com.fasterxml.jackson.databind.ObjectMapper jackson2ObjectMapper() {
+        return new com.fasterxml.jackson.databind.ObjectMapper().findAndRegisterModules();
     }
 
     @Bean
@@ -97,9 +102,9 @@ public class ApplicationBeans {
         uriBuilderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.URI_COMPONENT);
 
         return new RestTemplateBuilder()
+            .defaultMessageConverters()
             .requestFactory(webConfig::getRequestFactory)
             .uriTemplateHandler(uriBuilderFactory)
             .additionalInterceptors(interceptors);
     }
 }
-

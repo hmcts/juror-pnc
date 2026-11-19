@@ -11,7 +11,7 @@ plugins {
 }
 
 group = 'uk.gov.hmcts.juror'
-version = '5.33.0'
+version = '5.34.0'
 
 java {
   toolchain {
@@ -216,7 +216,7 @@ dependencies {
   implementation 'ch.qos.logback:logback-classic:1.6.5'
   implementation 'ch.qos.logback:logback-core:1.6.5'
   implementation 'org.apache.tomcat.embed:tomcat-embed-core:10.1.60'
-  implementation 'org.apache.tomcat.embed:tomcat-embed-websocket:10.1.60'
+  implementation 'org.apache.tomcat.embed:tomcat-embed-websocket:10.1.61'
   implementation 'org.apache.httpcomponents.client5:httpclient5:5.4.3'     // pinned - 5.6.2 conflicts with Spring Boot BOM httpcore5:5.3.6 causing SOAP 404s
   // END
 
@@ -233,7 +233,7 @@ dependencies {
   implementation "org.springframework.data:spring-data-commons:3.5.13"
   implementation 'org.springframework.boot:spring-boot-starter-web-services'
 
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-api', version: '2.8.17'
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-api', version: '2.10.0'
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: '8.0.0'
   implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4JVersion
   implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: log4JVersion
@@ -271,7 +271,7 @@ dependencies {
   runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jwtVersion}"
 
   // Web requests
-  implementation 'org.springframework:spring-webflux:7.0.9'
+  implementation 'org.springframework:spring-webflux:7.0.10'
 
   testImplementation(platform('org.junit:junit-bom:5.14.4'))
   testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'

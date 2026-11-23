@@ -201,6 +201,9 @@ repositories {
 }
 
 ext {
+  // Keep HttpClient and both HttpCore modules aligned for SOAP transport compatibility.
+  set("httpclient5.version", "5.6.4")
+  set("httpcore5.version", "5.4.3")
   log4JVersion = "2.26.1"      // upgraded from 2.24.3 - CVE-2026-49844 fix
   springVersion = "4.0.8"      // aligned with plugin version
   springSecurityVersion = "6.1.4"
@@ -215,7 +218,7 @@ dependencies {
   implementation 'ch.qos.logback:logback-core:1.6.5'
   implementation 'org.apache.tomcat.embed:tomcat-embed-core:10.1.60'
   implementation 'org.apache.tomcat.embed:tomcat-embed-websocket:10.1.61'
-  implementation 'org.apache.httpcomponents.client5:httpclient5:5.4.4'     // pinned - 5.6.2 conflicts with Spring Boot BOM httpcore5:5.3.6 causing SOAP 404s
+  implementation 'org.apache.httpcomponents.client5:httpclient5'
   // END
 
   implementation 'com.github.hmcts:juror-spring-support-library:2.0.0:plain@jar'

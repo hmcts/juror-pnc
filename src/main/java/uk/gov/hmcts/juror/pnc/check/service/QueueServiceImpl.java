@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.juror.pnc.check.config.ApplicationConfig;
 import uk.gov.hmcts.juror.pnc.check.model.JurorCheckBatch;
 import uk.gov.hmcts.juror.pnc.check.model.JurorCheckDetails;
+import uk.gov.hmcts.juror.pnc.check.model.PoliceNationalComputerCheckResult;
 import uk.gov.hmcts.juror.pnc.check.service.contracts.PoliceNationalComputerCheckService;
 import uk.gov.hmcts.juror.pnc.check.service.contracts.QueueService;
 import uk.gov.hmcts.juror.standard.service.exceptions.InternalServerException;
@@ -42,7 +43,16 @@ public class QueueServiceImpl implements QueueService {
     }
 
     public Runnable performPoliceCheckRunnable(JurorCheckDetails request) {
-        return () -> this.policeNationalComputerCheckService.performPoliceCheck(request);
+        return () -> {
+            try {
+                this.policeNationalComputerCheckService.performPoliceCheck(request);
+            } catch (Throwable throwable) {
+                log.error("Unexpected failure while processing queued police check for juror: {}",
+                    request.getJurorNumber(), throwable);
+                request.setResult(new PoliceNationalComputerCheckResult(
+                    PoliceNationalComputerCheckResult.Status.ERROR_RETRY_UNEXPECTED_EXCEPTION));
+            }
+        };
     }
 
     @Override
